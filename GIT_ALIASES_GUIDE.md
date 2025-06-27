@@ -1,75 +1,58 @@
-# Git Aliases Test and Usage Guide
+# Git Aliases Guide
 
-## 🔧 Installation Complete!
-
-Your git aliases have been successfully added to `~/.bashrc`. 
-
-## 🔄 Activation
-
-To use the aliases, you have several options:
+## Setup
 
 ```bash
-# Option 1: Load for current session (immediate)
+# Load for current session
 source .setup/.git-aliases
 
-# Option 2: Install permanently (adds to ~/.bashrc)
+# Install permanently 
 ./.setup/setup-git-aliases.sh
 source ~/.bashrc
-
-# Option 3: Manual setup
-echo 'source ~/path/to/pwdocs/.setup/.git-aliases' >> ~/.bashrc
-source ~/.bashrc
 ```
 
-## ✅ Testing Your Aliases
-
-Run this to test if aliases are working:
+## Test
 
 ```bash
-# Test basic git status
-gs
-
-# Test git log
-gl
-
-# Show all git aliases
-ghelp
+gs          # git status
+gl          # git log
+ghelp       # show all aliases
 ```
 
-## 📋 Most Useful Aliases
+## Most Useful Aliases
 
-### Daily Workflow
+**Daily workflow:**
 ```bash
 gs              # git status
-ga .            # git add all files
-gcm "message"   # git commit with message
+ga .            # git add all
+gcm "message"   # git commit -m "message"
 gp              # git push
 gpl             # git pull
 ```
 
-### Branch Management
+**Branching:**
 ```bash
-gcb mybranch    # git checkout -b mybranch
+gcb branch      # git checkout -b branch
 gco main        # git checkout main
-gb              # git branch (list all)
-gm mybranch     # git merge mybranch
+gb              # git branch
+gm branch       # git merge branch
 ```
 
-### Viewing History
+**History:**
 ```bash
 gl              # git log --oneline (last 10)
-glg             # git log --graph (pretty format)
+glg             # git log --graph (pretty)
 gd              # git diff
 gds             # git diff --staged
 ```
 
-### Quick Documentation Workflow
+**Quick doc update:**
 ```bash
-gdoc            # Add all, commit "Update documentation", push
-                # Equivalent to: git add . && git commit -m "Update documentation" && git push
+gdoc            # git add . && git commit -m "Update documentation" && git push
 ```
 
-### Advanced Operations
+## Advanced
+
 ```bash
 gst             # git stash
 gstp            # git stash pop
@@ -78,34 +61,22 @@ grhh            # git reset --hard HEAD
 gclean          # git clean -fd
 ```
 
-## 🆘 Getting Help
+## Help
 
 ```bash
-ghelp           # Show all available git aliases
-git --help      # Standard git help
+ghelp           # show all git aliases
+git --help      # standard git help
 ```
 
-## 🔧 Customization
-
-To add your own aliases, edit `~/.bashrc` and add lines like:
-```bash
-alias myalias='git command'
-```
-
-Then reload: `source ~/.bashrc`
-
-## 🚨 Troubleshooting
+## Issues
 
 **Aliases not working?**
-1. Run: `source ~/.bashrc`
-2. Or restart your terminal
-3. Check if aliases exist: `alias | grep git`
+1. Run `source ~/.bashrc`
+2. Restart terminal
+3. Check conflicts: `which gs` (ghostscript conflicts are common)
 
-**Conflict with existing commands?**
-- Some systems have `gs` (ghostscript) installed
-- Use `which gs` to check conflicts
-- Use full git commands if needed
+**Remove aliases:**
+- Edit `~/.bashrc` and delete Git Aliases section
+- Or restore backup: `~/.bashrc.backup.YYYYMMDD_HHMMSS`
 
-**Want to remove aliases?**
-- Edit `~/.bashrc` and remove the Git Aliases section
-- Or restore from backup: `~/.bashrc.backup.YYYYMMDD_HHMMSS`
+**Note:** Some systems have `gs` (ghostscript) pre-installed. This is a common source of confusion for new users who expect git aliases to work immediately.

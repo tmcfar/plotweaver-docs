@@ -1,60 +1,25 @@
-﻿# PlotWeaver Documentation Repository
+﻿# PlotWeaver Documentation
 
-## 🚀 Quick Start (WSL on Windows)
+## Quick Start (WSL + Windows)
 
-### Prerequisites
-- Windows 10/11 with WSL2 installed
-- Docker Desktop for Windows (with WSL2 backend)
-- Python 3.8+ in WSL
-- Git configured in WSL
+**Prerequisites:** WSL2, Docker Desktop, Python 3.8+, Git
 
-### Setup
-
-1. **Clone the repository**:
-   ```bash
-   git clone <repository-url>
-   cd pwdocs
-   ```
-
-2. **Install Python dependencies**:
-   ```bash
-   # Option 1: Use virtual environment (recommended)
-   python3 -m venv venv
-   source venv/bin/activate
-   pip install -r requirements.txt
-   
-   # Option 2: Run setup script (creates venv automatically)
-   ./.setup/setup.sh
-   ```
-
-3. **Configure API key** (for aider):
-   ```bash
-   export OPENROUTER_API_KEY="your-api-key-here"
-   echo 'export OPENROUTER_API_KEY="your-api-key-here"' >> ~/.bashrc
-   ```
-
-4. **Start developing**:
-   ```bash
-   # If using virtual environment
-   source venv/bin/activate
-   aider  # Start AI-assisted coding
-   
-   # Or directly from venv
-   ./venv/bin/aider
-   ```
-
-### VS Code Integration
-
-Open the project in VS Code from WSL:
 ```bash
-code .
+git clone <repository-url>
+cd pwdocs
+
+# Setup (creates venv automatically)
+./.setup/setup.sh
+
+# Start developing
+source venv/bin/activate
+aider
 ```
 
-The workspace includes:
-- **Tasks**: Install dependencies, start aider, format code
-- **Settings**: Python linting, formatting, and development optimizations
-- **Extensions**: Recommended Python and Markdown tools
-- **Clean Explorer**: Hides dotfiles, virtual environment, and gitignored files
+**VS Code integration:**
+```bash
+code .  # Opens with proper Python paths and clean explorer
+```
 
 ### Available Commands
 
@@ -82,17 +47,15 @@ gdoc                    # Quick doc commit (add all, commit, push)
 python scripts/process-issue.py  # Process GitHub issues
 ```
 
-## Overview
-
-This repository contains automatically generated and curated documentation for the PlotWeaver AI-assisted novel writing platform. Documentation is generated via GitHub Actions triggered by issue creation in the main PlotWeaver repository.
-
 ## Purpose
 
-- **Automated Documentation**: AI-generated technical specifications from GitHub issues
-- **Feature Planning**: Structured evaluation and planning documents
-- **API Documentation**: Comprehensive API references and examples
-- **Sprint Management**: 20-hour sprint planning and tracking
-- **Product Roadmap**: Strategic planning and feature pipeline management
+AI-generated technical documentation for PlotWeaver novel writing platform. Triggered by GitHub issues, processed via OpenRouter API.
+
+**Key features:**
+- Automated doc generation from issues
+- 20-hour sprint planning
+- Feature evaluation matrices
+- API documentation
 
 ## Repository Structure
 
@@ -132,58 +95,25 @@ pwdocs/
     └── system-spec.md          # System specification template
 ```
 
-## Development Workflow
+## Development
 
-### Working with Issues
-1. Create issue in main PlotWeaver repository
-2. GitHub Action automatically generates documentation
-3. Review and refine generated content
-4. Use aider for AI-assisted editing
-
-### Documentation Standards
-- Use Markdown for all documentation
-- Follow templates in `templates/` directory
-- Maintain consistent structure and formatting
-- Include examples and code samples where applicable
-
-### Git Workflow
+**Common workflow:**
 ```bash
-git checkout -b feature/new-documentation
-# Make changes
-git add .
-git commit -m "Add documentation for new feature"
-git push origin feature/new-documentation
-# Create pull request
+source venv/bin/activate
+aider file1.md file2.py    # Edit specific files
+black . && flake8 .        # Format and lint
+git add . && git commit -m "Update" && git push
 ```
 
-## Troubleshooting
+**Git aliases available:** `gs`, `gcm`, `gp`, `gdoc` (see GIT_ALIASES_GUIDE.md)
 
-### Common Issues
+## Issues
 
-**Aider not found**:
-```bash
-pip install --upgrade aider-chat
-source ~/.bashrc
-```
+**Virtual environment problems:** Modern Ubuntu requires venv, not system pip. The setup script handles this correctly.
 
-**Python path issues**:
-```bash
-which python3
-# Update .vscode/settings.json if needed
-```
+**Aider not found:** Ensure you're in the virtual environment or use `./venv/bin/aider`
 
-**Git configuration**:
-```bash
-git config --global user.name "Your Name"
-git config --global user.email "your.email@example.com"
-```
-
-**Docker not running**:
-```bash
-# Start Docker Desktop on Windows
-# Verify Docker is accessible from WSL
-docker --version
-```
+**VS Code Python path:** Should automatically use `./venv/bin/python` - restart VS Code if not working.
 
 ## Contributing
 
