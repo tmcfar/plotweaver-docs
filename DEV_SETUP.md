@@ -47,6 +47,9 @@ This will:
 - Configure Python formatting and linting
 - Set up development tasks
 - Enable WSL integration
+- Hide clutter files (dotfiles, venv, gitignored files) in explorer
+
+**Toggle hidden files visibility**: `Ctrl+Shift+P` → "Files: Toggle Excluded Files"
 
 ## Daily Workflow
 

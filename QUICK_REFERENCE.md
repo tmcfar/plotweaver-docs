@@ -80,9 +80,16 @@ ghelp       # Show all available git aliases
 
 ## VS Code Tasks
 - **Ctrl+Shift+P** → "Tasks: Run Task"
+- Setup Virtual Environment
 - Install Dependencies
 - Start Aider
 - Format Code
+- Show/Hide Dotfiles
+
+## VS Code Explorer
+- **Hidden by default**: dotfiles, venv, gitignored files
+- **Toggle hidden files**: `Ctrl+Shift+P` → "Files: Toggle Excluded Files"
+- **Clean view**: Only shows relevant project files
 
 ## Troubleshooting
 ```bash

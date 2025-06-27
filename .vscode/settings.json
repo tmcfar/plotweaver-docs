@@ -15,5 +15,43 @@
     "markdown.preview.breaks": true,
     "git.autofetch": true,
     "terminal.integrated.defaultProfile.linux": "bash",
-    "python.terminal.activateEnvironment": true
+    "python.terminal.activateEnvironment": true,
+    
+    // Explorer and file visibility settings
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/__pycache__": true,
+        "**/*.pyc": true,
+        "**/node_modules": true,
+        "**/.pytest_cache": true,
+        "**/.mypy_cache": true,
+        "**/.coverage": true,
+        "**/venv": true,
+        "**/.venv": true,
+        "**/env": true,
+        "**/.env": true,
+        "**/.aider*": true
+    },
+    
+    // Respect gitignore in explorer
+    "explorer.excludeGitIgnore": true,
+    
+    // Search settings to respect gitignore
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/*.code-search": true,
+        "**/venv": true,
+        "**/.venv": true,
+        "**/env": true,
+        "**/__pycache__": true,
+        "**/.git": true,
+        "**/.pytest_cache": true,
+        "**/.mypy_cache": true
+    },
+    
+    "search.useIgnoreFiles": true,
+    "search.useGlobalIgnoreFiles": true
 }

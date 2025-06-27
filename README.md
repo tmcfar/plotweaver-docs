@@ -54,6 +54,7 @@ The workspace includes:
 - **Tasks**: Install dependencies, start aider, format code
 - **Settings**: Python linting, formatting, and development optimizations
 - **Extensions**: Recommended Python and Markdown tools
+- **Clean Explorer**: Hides dotfiles, virtual environment, and gitignored files
 
 ### Available Commands
 
