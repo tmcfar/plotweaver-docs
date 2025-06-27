@@ -16,7 +16,6 @@
     "git.autofetch": true,
     "terminal.integrated.defaultProfile.linux": "bash",
     "python.terminal.activateEnvironment": true,
-    
     // Explorer and file visibility settings
     "files.exclude": {
         "**/.git": true,
@@ -34,10 +33,8 @@
         "**/.env": true,
         "**/.aider*": true
     },
-    
     // Respect gitignore in explorer
     "explorer.excludeGitIgnore": true,
-    
     // Search settings to respect gitignore
     "search.exclude": {
         "**/node_modules": true,
@@ -51,7 +48,6 @@
         "**/.pytest_cache": true,
         "**/.mypy_cache": true
     },
-    
     "search.useIgnoreFiles": true,
     "search.useGlobalIgnoreFiles": true
 }

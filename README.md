@@ -66,10 +66,13 @@ pwdocs/
 ├── active-features.md           # Currently active features
 ├── roadmap.md                   # Product roadmap overview
 │
-├── .setup/                      # Setup and configuration scripts
+├── .setup/                      # Setup and configuration
 │   ├── setup.sh                # Main setup script
 │   ├── setup-git-aliases.sh    # Git aliases installer
-│   └── .git-aliases            # Git aliases definitions
+│   ├── .git-aliases            # Git aliases definitions
+│   ├── DEV_SETUP.md            # Development environment guide
+│   ├── GIT_ALIASES_GUIDE.md    # Git aliases documentation
+│   └── MIGRATION_SUMMARY.md    # Codespaces → WSL migration notes
 │
 ├── .vscode/                     # VS Code configuration
 │   ├── settings.json           # Editor settings
@@ -105,7 +108,7 @@ black . && flake8 .        # Format and lint
 git add . && git commit -m "Update" && git push
 ```
 
-**Git aliases available:** `gs`, `gcm`, `gp`, `gdoc` (see GIT_ALIASES_GUIDE.md)
+**Git aliases available:** `gs`, `gcm`, `gp`, `gdoc` (see .setup/GIT_ALIASES_GUIDE.md)
 
 ## Issues
 

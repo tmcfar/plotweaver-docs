@@ -27,7 +27,7 @@ git clone <repository-url>
 cd pwdocs
 
 # Run the setup script
-./setup.sh
+./.setup/setup.sh
 
 # Or manual setup:
 pip install -r requirements.txt
@@ -107,10 +107,12 @@ git push origin feature/my-feature
 
 ```
 pwdocs/
-├── setup.sh                    # Setup script for new environments
+├── .setup/                     # Setup and configuration
+│   ├── setup.sh               # Setup script for new environments
+│   ├── DEV_SETUP.md          # This file
+│   └── ...                   # Other setup files
 ├── requirements.txt             # Python dependencies
 ├── QUICK_REFERENCE.md          # Command reference
-├── DEV_SETUP.md               # This file
 │
 ├── .vscode/                    # VS Code configuration
 │   ├── settings.json          # Python, formatting, WSL settings

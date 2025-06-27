@@ -16,8 +16,9 @@
 
 ### 📚 Documentation
 - **New README.md**: WSL-focused setup instructions
-- **DEV_SETUP.md**: Comprehensive development guide
+- **DEV_SETUP.md**: Comprehensive development guide (moved to .setup/)
 - **QUICK_REFERENCE.md**: Command cheat sheet for daily use
+- **GIT_ALIASES_GUIDE.md**: Git aliases documentation (moved to .setup/)
 
 ### 🐍 Python Environment
 - **Virtual environment support**: Automatic creation via setup script
@@ -49,9 +50,11 @@ pwdocs/
 ├── .setup/                     # Setup and configuration scripts
 │   ├── setup.sh               # One-command setup script
 │   ├── setup-git-aliases.sh   # Git aliases installer
-│   └── .git-aliases           # Git aliases definitions
+│   ├── .git-aliases           # Git aliases definitions
+│   ├── DEV_SETUP.md          # Detailed development guide
+│   ├── GIT_ALIASES_GUIDE.md  # Git aliases documentation
+│   └── MIGRATION_SUMMARY.md  # This file
 ├── README.md                   # WSL setup instructions
-├── DEV_SETUP.md               # Detailed development guide
 ├── QUICK_REFERENCE.md          # Command reference
 ├── requirements.txt            # Python dependencies
 │

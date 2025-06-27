@@ -4,9 +4,15 @@ This directory contains setup and configuration scripts for the PlotWeaver docum
 
 ## Files
 
+**Scripts:**
 - **`setup.sh`** - Main setup script that creates virtual environment, installs dependencies, and optionally sets up git aliases
 - **`setup-git-aliases.sh`** - Installs git aliases to ~/.bashrc for permanent use
 - **`.git-aliases`** - Git aliases definitions that can be sourced for temporary use
+
+**Documentation:**
+- **`DEV_SETUP.md`** - Comprehensive development environment guide
+- **`GIT_ALIASES_GUIDE.md`** - Git aliases usage and troubleshooting
+- **`MIGRATION_SUMMARY.md`** - Documentation of Codespaces → WSL migration
 
 ## Usage
 
