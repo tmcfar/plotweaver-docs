@@ -1,1 +1,19 @@
-﻿ൻ †∠摥瑩牯昮牯慭佴卮癡≥›慦獬ⱥ਍††攢楤潴⹲敤慦汵䙴牯慭瑴牥㨢渠汵ⱬ਍††眢牯扫湥档挮汯牯桔浥≥›䴢瑡牥慩⁬桔浥⁥敄灥潆敲瑳䠠杩⁨潃瑮慲瑳Ⱒ਍††攢楤潴⹲潦浲瑡湏慐瑳≥›慦獬൥紊
+{
+    "python.defaultInterpreterPath": "./venv/bin/python",
+    "python.formatting.provider": "black",
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.mypyEnabled": true,
+    "python.linting.lintOnSave": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": null,
+    "workbench.colorTheme": "Default Dark+",
+    "editor.formatOnPaste": false,
+    "files.associations": {
+        "*.md": "markdown"
+    },
+    "markdown.preview.breaks": true,
+    "git.autofetch": true,
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "python.terminal.activateEnvironment": true
+}

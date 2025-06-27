@@ -1,3 +1,48 @@
+# Aider files
 .aider*
+
+# VS Code workspace files (user-specific)
 *.code-workspace
-.devcontainer/
+
+# Python virtual environment
+venv/
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+temp/
+.temp/
+
+# Environment variables
+.env
+.env.local

@@ -1,25 +1,85 @@
 ﻿# PlotWeaver Documentation Repository
 
-## 🚀 Quick Start with GitHub Codespaces
+## 🚀 Quick Start (WSL on Windows)
 
-1. **Open in Codespaces**:
-   - Click the "Code" button on GitHub
-   - Select "Codespaces" → "Create codespace on main"
-   - Wait for the environment to set up automatically
+### Prerequisites
+- Windows 10/11 with WSL2 installed
+- Docker Desktop for Windows (with WSL2 backend)
+- Python 3.8+ in WSL
+- Git configured in WSL
 
-2. **Configure API Key**:
+### Setup
+
+1. **Clone the repository**:
+   ```bash
+   git clone <repository-url>
+   cd pwdocs
+   ```
+
+2. **Install Python dependencies**:
+   ```bash
+   # Option 1: Use virtual environment (recommended)
+   python3 -m venv venv
+   source venv/bin/activate
+   pip install -r requirements.txt
+   
+   # Option 2: Run setup script (creates venv automatically)
+   ./setup.sh
+   ```
+
+3. **Configure API key** (for aider):
    ```bash
    export OPENROUTER_API_KEY="your-api-key-here"
    echo 'export OPENROUTER_API_KEY="your-api-key-here"' >> ~/.bashrc
    ```
 
-3. **Start Developing**:
+4. **Start developing**:
    ```bash
+   # If using virtual environment
+   source venv/bin/activate
    aider  # Start AI-assisted coding
+   
+   # Or directly from venv
+   ./venv/bin/aider
    ```
 
-📖 **Detailed Setup**: See [CODESPACES_SETUP.md](CODESPACES_SETUP.md)  
-🔧 **Quick Reference**: See [QUICK_REFERENCE.md](QUICK_REFERENCE.md)
+### VS Code Integration
+
+Open the project in VS Code from WSL:
+```bash
+code .
+```
+
+The workspace includes:
+- **Tasks**: Install dependencies, start aider, format code
+- **Settings**: Python linting, formatting, and development optimizations
+- **Extensions**: Recommended Python and Markdown tools
+
+### Available Commands
+
+```bash
+# Development
+aider                    # Start AI-assisted coding
+aider file1.md file2.py  # Work on specific files
+
+# Setup
+./setup.sh              # Full project setup (includes git aliases)
+./setup-git-aliases.sh  # Install git aliases only
+
+# Code Quality
+black .                  # Format Python code
+flake8 .                # Check code style
+mypy .                  # Type checking
+
+# Git (after installing aliases)
+gs                      # git status
+gcm "message"           # git commit -m "message"
+gp                      # git push
+gdoc                    # Quick doc commit (add all, commit, push)
+
+# Project Management
+python scripts/process-issue.py  # Process GitHub issues
+```
 
 ## Overview
 
@@ -36,295 +96,97 @@ This repository contains automatically generated and curated documentation for t
 ## Repository Structure
 
 ```
-plotweaver-docs/
-├── README.txt                    # This file
+pwdocs/
+├── README.md                    # This file
+├── requirements.txt             # Python dependencies
 ├── active-features.md           # Currently active features
 ├── roadmap.md                   # Product roadmap overview
 │
-├── api/                         # API documentation
-│   ├── agents/                  # Agent-specific API docs
-│   ├── endpoints/               # REST API endpoints
-│   └── examples/                # API usage examples
+├── .vscode/                     # VS Code configuration
+│   ├── settings.json           # Editor settings
+│   └── tasks.json              # Build tasks
 │
-├── evaluations/                 # Feature evaluation matrices
-│   ├── scoring/                 # Feature scoring results
-│   └── analysis/                # Evaluation analysis
+├── Claude-Docs/                 # AI-generated documentation
+│   ├── agent-system.md         # Agent system architecture
+│   ├── architecture-design.md  # Overall system design
+│   └── sprint.yaml             # Current sprint planning
 │
-├── features/                    # Feature documentation
-│   ├── proposed/                # New feature proposals
-│   ├── in-development/          # Features under development
-│   ├── completed/               # Completed features
-│   └── archived/                # Archived/cancelled features
-│
-├── issues/                      # Issue tracking and analysis
-│   ├── open/                    # Open issues documentation
-│   ├── closed/                  # Closed issues documentation
-│   └── analysis/                # Issue trend analysis
-│
-├── planning/                    # Strategic planning documents
-│   ├── mvp/                     # MVP definitions and requirements
-│   ├── sprints/                 # Sprint planning (20-hour cycles)
-│   ├── milestones/              # Major milestone definitions
-│   └── roadmap/                 # Detailed roadmap components
+├── planning/                    # Project planning documents
+│   ├── mvp.md                  # Minimum viable product
+│   └── roadmap.md              # Detailed roadmap
 │
 ├── scripts/                     # Automation scripts
-│   └── process-issue.py         # GitHub issue processing script
+│   └── process-issue.py        # GitHub issue processor
 │
-├── specifications/              # Technical specifications
-│   ├── agents/                  # AI agent specifications
-│   ├── algorithms/              # Algorithm documentation
-│   ├── models/                  # Data model specifications
-│   └── systems/                 # System architecture specs
-│
-└── templates/                   # Documentation templates
-    ├── feature-evaluation.md    # Feature scoring matrix template
-    ├── issue-tracking.md        # Issue documentation template
-    ├── api-documentation.md     # API documentation template
-    ├── sprint-planning.md       # 20-hour sprint template
-    ├── system-specification.md  # System spec template
-    ├── agent-specification.md   # Agent spec template
-    ├── algorithm-documentation.md # Algorithm spec template
-    ├── mvp-definition.md        # MVP planning template
-    ├── product-roadmap.md       # Roadmap template
-    └── feature-pipeline.md      # Feature pipeline template
+└── templates/                   # Document templates
+    ├── feature-evaluation.md   # Feature evaluation template
+    ├── mvp.md                  # MVP template
+    ├── sprint.md               # Sprint template
+    └── system-spec.md          # System specification template
 ```
 
-## Automation System
+## Development Workflow
 
-### GitHub Actions Workflow
+### Working with Issues
+1. Create issue in main PlotWeaver repository
+2. GitHub Action automatically generates documentation
+3. Review and refine generated content
+4. Use aider for AI-assisted editing
 
-**Trigger**: New issue created in main PlotWeaver repository
-**Location**: `.github/workflows/doc-manager.yml` (in main repo)
-**Process**:
+### Documentation Standards
+- Use Markdown for all documentation
+- Follow templates in `templates/` directory
+- Maintain consistent structure and formatting
+- Include examples and code samples where applicable
 
-1. **Issue Detection**: Workflow triggers on new issue creation
-2. **Data Extraction**: Extracts issue number, title, and body
-3. **Repository Checkout**: Checks out plotweaver-docs repository
-4. **AI Processing**: Calls OpenRouter API with Claude 3.5 Sonnet
-5. **Documentation Generation**: Creates structured documentation
-6. **File Creation**: Generates README.md and status.md files
-7. **Commit & Push**: Automatically commits to plotweaver-docs
-
-### Processing Script
-
-**File**: `scripts/process-issue.py`
-**Features**:
-- Windows-safe path sanitization
-- Character filtering for folder names
-- OpenRouter API integration
-- Structured prompt generation
-- Error handling and logging
-
-**Environment Variables**:
-- `OPENROUTER_API_KEY`: API key for Claude access
-- `ISSUE_NUMBER`: GitHub issue number
-- `ISSUE_TITLE`: Issue title (sanitized for paths)
-- `ISSUE_BODY`: Issue description content
-- `EVENT_TYPE`: GitHub event type (usually "opened")
-
-### Folder Naming Convention
-
-Generated folders follow the pattern:
+### Git Workflow
+```bash
+git checkout -b feature/new-documentation
+# Make changes
+git add .
+git commit -m "Add documentation for new feature"
+git push origin feature/new-documentation
+# Create pull request
 ```
-features/proposed/{issue_number}-{sanitized_title}/
-```
-
-**Sanitization Rules**:
-- Invalid characters `<>:"|?*\\/` replaced with `-`
-- Multiple consecutive dashes collapsed to single dash
-- Spaces converted to dashes
-- Leading/trailing dashes removed
-- Converted to lowercase
-
-## Templates System
-
-### Available Templates
-
-1. **Feature Evaluation** (`feature-evaluation.md`)
-   - Scoring matrix (1-10 scale)
-   - Technical complexity assessment
-   - Business value analysis
-   - Implementation timeline
-
-2. **Issue Tracking** (`issue-tracking.md`)
-   - Issue categorization
-   - Priority assessment
-   - Resolution tracking
-   - Impact analysis
-
-3. **API Documentation** (`api-documentation.md`)
-   - Endpoint specifications
-   - Request/response examples
-   - Authentication requirements
-   - Error handling
-
-4. **Sprint Planning** (`sprint-planning.md`)
-   - 20-hour sprint cycles
-   - Task breakdown
-   - Resource allocation
-   - Success metrics
-
-5. **System Specification** (`system-specification.md`)
-   - Architecture overview
-   - Component interactions
-   - Data flow diagrams
-   - Performance requirements
-
-6. **Agent Specification** (`agent-specification.md`)
-   - Agent behavior definition
-   - Input/output contracts
-   - Dependencies mapping
-   - Quality metrics
-
-7. **Algorithm Documentation** (`algorithm-documentation.md`)
-   - Algorithm description
-   - Implementation details
-   - Performance characteristics
-   - Test cases
-
-8. **MVP Definition** (`mvp-definition.md`)
-   - Core feature requirements
-   - Success criteria
-   - Timeline and milestones
-   - Resource requirements
-
-9. **Product Roadmap** (`product-roadmap.md`)
-   - Strategic vision
-   - Feature prioritization
-   - Timeline planning
-   - Dependencies mapping
-
-10. **Feature Pipeline** (`feature-pipeline.md`)
-    - Feature flow management
-    - Stage definitions
-    - Approval processes
-    - Quality gates
-
-## Usage Patterns
-
-### Creating New Documentation
-
-1. **Create Issue**: Create new issue in main PlotWeaver repository
-2. **Wait for Processing**: GitHub Action processes issue (usually <2 minutes)
-3. **Review Generated Docs**: Check `features/proposed/{issue-number}-{title}/`
-4. **Edit if Needed**: Manual edits to generated documentation
-5. **Move Through Pipeline**: Move folders as features progress
-
-### Documentation Lifecycle
-
-```
-features/proposed/     →  features/in-development/  →  features/completed/
-     ↓                           ↓                           ↓
-Auto-generated docs    Manual updates/refinements    Final documentation
-Issue-based content    Development notes added       Implementation details
-AI-created structure   Human collaboration           Lessons learned
-```
-
-### Manual Documentation
-
-For non-issue-based documentation:
-1. Choose appropriate template from `templates/`
-2. Create new file in relevant directory
-3. Follow template structure
-4. Commit manually to repository
-
-### Search and Discovery
-
-**By Feature Status**:
-- `features/proposed/` - New ideas and proposals
-- `features/in-development/` - Active development
-- `features/completed/` - Finished features
-
-**By Document Type**:
-- `specifications/` - Technical specifications
-- `planning/` - Strategic planning
-- `api/` - API documentation
-- `evaluations/` - Feature assessments
-
-**By Timeline**:
-- `planning/sprints/` - Current and past sprints
-- `planning/milestones/` - Major deliverables
-- `planning/roadmap/` - Long-term planning
-
-## Configuration
-
-### Required Secrets
-
-Set in main PlotWeaver repository:
-- `DOCS_REPO_TOKEN`: GitHub PAT with repository access
-- `OPENROUTER_API_KEY`: OpenRouter API key for Claude access
-
-### AI Model Configuration
-
-**Current Setup**:
-- Model: `anthropic/claude-3.5-sonnet`
-- Max Tokens: 1000
-- Temperature: Default (controlled by OpenRouter)
-- Provider: OpenRouter
-
-### Repository Access
-
-- **Main Repository**: https://github.com/tmcfar/PlotWeaver (public)
-- **Docs Repository**: https://github.com/tmcfar/plotweaver-docs (private)
-- **Actions**: View at https://github.com/tmcfar/PlotWeaver/actions
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Invalid Path Names**: 
-   - Issue titles with special characters
-   - Fixed by character sanitization in process-issue.py
+**Aider not found**:
+```bash
+pip install --upgrade aider-chat
+source ~/.bashrc
+```
 
-2. **API Rate Limits**:
-   - OpenRouter API limits
-   - Wait and retry, or upgrade API plan
+**Python path issues**:
+```bash
+which python3
+# Update .vscode/settings.json if needed
+```
 
-3. **GitHub Token Expiration**:
-   - PAT tokens expire
-   - Update `DOCS_REPO_TOKEN` secret
+**Git configuration**:
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+```
 
-4. **Workflow Failures**:
-   - Check Actions tab in main repository
-   - Review workflow logs for errors
-
-### Manual Fixes
-
-If automation fails:
-1. Clone this repository locally
-2. Create documentation manually using templates
-3. Follow folder naming conventions
-4. Commit and push manually
-
-### Monitoring
-
-Check these locations for system health:
-- **GitHub Actions**: Main repo Actions tab
-- **Output Logs**: Workflow execution logs
-- **Recent Commits**: This repository's commit history
-- **Issue Status**: Verify documentation created for new issues
+**Docker not running**:
+```bash
+# Start Docker Desktop on Windows
+# Verify Docker is accessible from WSL
+docker --version
+```
 
 ## Contributing
 
-### For PlotWeaver Team
-
-1. **Use Issues**: Create issues in main repo for automatic documentation
-2. **Review Generated Docs**: Check and refine AI-generated content
-3. **Update Templates**: Improve templates as patterns emerge
-4. **Organize Documentation**: Move features through pipeline stages
-
-### For External Contributors
-
-1. **Read Documentation**: Use this repository for understanding PlotWeaver
-2. **Suggest Improvements**: Create issues in main repository
-3. **Report Docs Issues**: Use main repository for documentation feedback
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run code quality checks: `black . && flake8 .`
+5. Commit and push changes
+6. Create a pull request
 
 ## License
 
-This documentation repository follows the same license as the main PlotWeaver project.
-
----
-
-**Last Updated**: June 26, 2025
-**Automation Status**: Active and functioning
-**Repository Access**: Private (PlotWeaver team only)
+This documentation repository is part of the PlotWeaver project. See the main repository for licensing information.
