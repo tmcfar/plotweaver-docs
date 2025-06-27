@@ -1,5 +1,26 @@
 ﻿# PlotWeaver Documentation Repository
 
+## 🚀 Quick Start with GitHub Codespaces
+
+1. **Open in Codespaces**:
+   - Click the "Code" button on GitHub
+   - Select "Codespaces" → "Create codespace on main"
+   - Wait for the environment to set up automatically
+
+2. **Configure API Key**:
+   ```bash
+   export OPENROUTER_API_KEY="your-api-key-here"
+   echo 'export OPENROUTER_API_KEY="your-api-key-here"' >> ~/.bashrc
+   ```
+
+3. **Start Developing**:
+   ```bash
+   aider  # Start AI-assisted coding
+   ```
+
+📖 **Detailed Setup**: See [CODESPACES_SETUP.md](CODESPACES_SETUP.md)  
+🔧 **Quick Reference**: See [QUICK_REFERENCE.md](QUICK_REFERENCE.md)
+
 ## Overview
 
 This repository contains automatically generated and curated documentation for the PlotWeaver AI-assisted novel writing platform. Documentation is generated via GitHub Actions triggered by issue creation in the main PlotWeaver repository.
