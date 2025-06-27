@@ -10,14 +10,14 @@ To use the aliases, you have several options:
 
 ```bash
 # Option 1: Load for current session (immediate)
-source .git-aliases
+source .setup/.git-aliases
 
 # Option 2: Install permanently (adds to ~/.bashrc)
-./setup-git-aliases.sh
+./.setup/setup-git-aliases.sh
 source ~/.bashrc
 
 # Option 3: Manual setup
-echo 'source ~/path/to/pwdocs/.git-aliases' >> ~/.bashrc
+echo 'source ~/path/to/pwdocs/.setup/.git-aliases' >> ~/.bashrc
 source ~/.bashrc
 ```
 

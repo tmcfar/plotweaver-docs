@@ -2,15 +2,15 @@
 
 ## Setup
 ```bash
-./setup.sh                              # Run setup script (creates venv)
+./.setup/setup.sh                        # Run setup script (creates venv)
 # OR manually:
 python3 -m venv venv                     # Create virtual environment  
 source venv/bin/activate                 # Activate virtual environment
 pip install -r requirements.txt         # Install dependencies
 
 # Git aliases (optional)
-./setup-git-aliases.sh                  # Setup git aliases in bashrc
-source .git-aliases                      # Load aliases for current session
+./.setup/setup-git-aliases.sh           # Setup git aliases in bashrc
+source .setup/.git-aliases              # Load aliases for current session
 ```
 
 ## Development
@@ -33,7 +33,7 @@ mypy .                                  # Type checking
 ## Git Workflow
 ```bash
 # Setup git aliases (one-time)
-./setup-git-aliases.sh                  # Install useful git aliases
+./.setup/setup-git-aliases.sh           # Install useful git aliases
 
 # Basic workflow (with aliases)
 gs                                       # git status

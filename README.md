@@ -24,7 +24,7 @@
    pip install -r requirements.txt
    
    # Option 2: Run setup script (creates venv automatically)
-   ./setup.sh
+   ./.setup/setup.sh
    ```
 
 3. **Configure API key** (for aider):
@@ -63,8 +63,8 @@ aider                    # Start AI-assisted coding
 aider file1.md file2.py  # Work on specific files
 
 # Setup
-./setup.sh              # Full project setup (includes git aliases)
-./setup-git-aliases.sh  # Install git aliases only
+./.setup/setup.sh              # Full project setup (includes git aliases)
+./.setup/setup-git-aliases.sh  # Install git aliases only
 
 # Code Quality
 black .                  # Format Python code
@@ -102,9 +102,15 @@ pwdocs/
 ├── active-features.md           # Currently active features
 ├── roadmap.md                   # Product roadmap overview
 │
+├── .setup/                      # Setup and configuration scripts
+│   ├── setup.sh                # Main setup script
+│   ├── setup-git-aliases.sh    # Git aliases installer
+│   └── .git-aliases            # Git aliases definitions
+│
 ├── .vscode/                     # VS Code configuration
 │   ├── settings.json           # Editor settings
-│   └── tasks.json              # Build tasks
+│   ├── tasks.json              # Build tasks
+│   └── extensions.json         # Recommended extensions
 │
 ├── Claude-Docs/                 # AI-generated documentation
 │   ├── agent-system.md         # Agent system architecture

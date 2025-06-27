@@ -105,12 +105,12 @@ echo "🔧 Git aliases setup..."
 read -p "   Install useful git aliases? (Y/n) " -n 1 -r
 echo
 if [[ ! $REPLY =~ ^[Nn]$ ]]; then
-    ./setup-git-aliases.sh
+    ./.setup/setup-git-aliases.sh
     echo "✅ Git aliases installed"
     echo "   Run 'source ~/.bashrc' to activate them"
 else
     echo "   Skipped git aliases setup"
-    echo "   Run './setup-git-aliases.sh' later if needed"
+    echo "   Run './.setup/setup-git-aliases.sh' later if needed"
 fi
 
 echo ""

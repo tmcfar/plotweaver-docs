@@ -32,7 +32,7 @@ git clone <repository-url>
 cd pwdocs
 
 # Run setup (creates venv automatically)
-./setup.sh
+./.setup/setup.sh
 
 # Open in VS Code
 code .
@@ -46,7 +46,10 @@ aider
 
 ```
 pwdocs/
-├── setup.sh                    # One-command setup script
+├── .setup/                     # Setup and configuration scripts
+│   ├── setup.sh               # One-command setup script
+│   ├── setup-git-aliases.sh   # Git aliases installer
+│   └── .git-aliases           # Git aliases definitions
 ├── README.md                   # WSL setup instructions
 ├── DEV_SETUP.md               # Detailed development guide
 ├── QUICK_REFERENCE.md          # Command reference

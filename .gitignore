@@ -8,6 +8,9 @@
 venv/
 .venv/
 
+# Setup scripts are tracked, but backups are not
+.setup/*.backup.*
+
 # Python
 __pycache__/
 *.py[cod]

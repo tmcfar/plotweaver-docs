@@ -4,7 +4,7 @@
         {
             "label": "Setup Virtual Environment",
             "type": "shell",
-            "command": "./setup.sh",
+            "command": "./.setup/setup.sh",
             "group": "build",
             "presentation": {
                 "echo": true,
