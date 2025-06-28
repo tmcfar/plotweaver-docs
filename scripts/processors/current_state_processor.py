@@ -2,16 +2,21 @@
 """Current state processor - handles documentation labeled issues with full pipeline."""
 
 import requests
-from .shared_utils import clean_title_for_filename, ensure_directory, get_current_timestamp
+from .shared_utils import (clean_title_for_filename, ensure_directory, get_current_timestamp,
+                          get_github_metadata, format_github_metadata_markdown)
+from .changelog_manager import create_core_doc_metadata_section
 
 
-def process_current_state_update(api_key, issue_number, issue_title, issue_body):
+def process_current_state_update(api_key, issue_number, issue_title, issue_body, is_duplicate=False, other_types=None):
     """Process current state documentation updates using full pipeline."""
     
     # Create processing directory
     clean_title = clean_title_for_filename(issue_title)
     work_dir = f"current-state-updates/{issue_number}-{clean_title}"
     ensure_directory(work_dir)
+    
+    # Get GitHub metadata
+    github_metadata = get_github_metadata(issue_number, issue_title)
     
     # Analyze content and determine approach using AI
     analysis_prompt = f"""
@@ -62,36 +67,57 @@ Be critical and realistic about what can be automated vs what needs manual revie
     else:
         analysis = f"Error in analysis: {response.status_code} - {response.text}"
         
+    # Build analysis content with metadata and duplication warning
+    analysis_content = f"# Analysis: {issue_title}\n\n"
+    
+    # Add duplication warning if needed
+    if is_duplicate:
+        analysis_content += "⚠️ **DUPLICATE PROCESSING NOTICE**\n"
+        analysis_content += f"This issue was processed multiple ways due to multiple labels: {other_types}\n"
+        analysis_content += "See other generated files for this issue.\n\n"
+    
+    analysis_content += format_github_metadata_markdown(github_metadata)
+    analysis_content += "## AI Analysis\n\n"
+    analysis_content += analysis
+    analysis_content += "\n\n## Original Issue Content\n\n"
+    analysis_content += f"**Title:** {issue_title}\n\n"
+    analysis_content += f"**Body:**\n{issue_body}"
+    
     # Save analysis for manual review
     with open(f"{work_dir}/analysis.md", "w") as f:
-        f.write(f"# Analysis: {issue_title}\n\n")
-        f.write(f"Issue: #{issue_number}\n")
-        f.write(f"Created: {get_current_timestamp()}\n\n")
-        f.write("## AI Analysis\n\n")
-        f.write(analysis)
-        f.write("\n\n## Original Issue Content\n\n")
-        f.write(f"**Title:** {issue_title}\n\n")
-        f.write(f"**Body:**\n{issue_body}")
+        f.write(analysis_content)
     
     # Create processing instruction for manual follow-up
+    instructions_content = f"# Processing Instructions: {issue_title}\n\n"
+    instructions_content += format_github_metadata_markdown(github_metadata)
+    
+    if is_duplicate:
+        instructions_content += "⚠️ **DUPLICATE PROCESSING NOTICE**\n"
+        instructions_content += f"Also processed as: {', '.join(other_types)}\n\n"
+    
+    instructions_content += "## Next Steps\n"
+    instructions_content += "1. Review the AI analysis in `analysis.md`\n"
+    instructions_content += "2. Apply the recommended approach:\n"
+    instructions_content += "   - If SPLIT_APPROACH: Create system-spec updates + feature evaluations\n"
+    instructions_content += "   - If CURRENT_STATE_ONLY: Update relevant templates\n"
+    instructions_content += "   - If FEATURE_EVALUATION_ONLY: Create feature evaluation documents\n"
+    instructions_content += "   - If MANUAL_REVIEW: Process manually using established patterns\n"
+    instructions_content += "\n## Templates Available\n"
+    instructions_content += "- `templates/system-spec.md`\n"
+    instructions_content += "- `templates/roadmap.md`\n"
+    instructions_content += "- `templates/feature-evaluation.md`\n"
+    instructions_content += "\n## Changelog Management\n"
+    instructions_content += "- For core template updates, use changelog system\n"
+    instructions_content += "- Changelog files: `{template}-changelog.yaml`\n"
+    instructions_content += "- Use `changelog_manager.py` functions\n"
+    instructions_content += "\n## Established Patterns\n"
+    instructions_content += "- Split approach: Working features → templates, Proposed features → evaluations\n"
+    instructions_content += "- Critical analysis with realistic timelines\n"
+    instructions_content += "- Purge performance claims and marketing language\n"
+    instructions_content += "- Move processed files to avoid duplication\n"
+    
     with open(f"{work_dir}/processing-instructions.md", "w") as f:
-        f.write(f"# Processing Instructions: {issue_title}\n\n")
-        f.write("## Next Steps\n")
-        f.write("1. Review the AI analysis in `analysis.md`\n")
-        f.write("2. Apply the recommended approach:\n")
-        f.write("   - If SPLIT_APPROACH: Create system-spec updates + feature evaluations\n")
-        f.write("   - If CURRENT_STATE_ONLY: Update relevant templates\n")
-        f.write("   - If FEATURE_EVALUATION_ONLY: Create feature evaluation documents\n")
-        f.write("   - If MANUAL_REVIEW: Process manually using established patterns\n")
-        f.write("\n## Templates Available\n")
-        f.write("- `templates/system-spec.md`\n")
-        f.write("- `templates/roadmap.md`\n")
-        f.write("- `templates/feature-evaluation.md`\n")
-        f.write("\n## Established Patterns\n")
-        f.write("- Split approach: Working features → templates, Proposed features → evaluations\n")
-        f.write("- Critical analysis with realistic timelines\n")
-        f.write("- Purge performance claims and marketing language\n")
-        f.write("- Move processed files to avoid duplication\n")
+        f.write(instructions_content)
     
     print(f"✅ Current state analysis created: {work_dir}")
     print("📋 Manual processing required - see processing-instructions.md")
