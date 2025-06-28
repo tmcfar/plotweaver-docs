@@ -7,6 +7,16 @@ set -e  # Exit on any error
 
 echo "🚀 Setting up PlotWeaver Documentation environment..."
 
+# Check if virtual environment already exists and is properly set up
+if [ -d "venv" ] && [ -f "venv/bin/activate" ] && [ -f "venv/pyvenv.cfg" ]; then
+    echo "✅ Virtual environment already exists"
+    if venv/bin/python -c "import aider" 2>/dev/null; then
+        echo "✅ Dependencies already installed"
+        echo "🎯 Environment ready! Use: source venv/bin/activate"
+        exit 0
+    fi
+fi
+
 # Check if we're in WSL
 if ! grep -q microsoft /proc/version 2>/dev/null; then
     echo "⚠️  Warning: This script is optimized for WSL on Windows"

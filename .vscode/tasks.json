@@ -12,9 +12,6 @@
                 "panel": "shared"
             },
             "problemMatcher": [],
-            "runOptions": {
-                "runOn": "folderOpen"
-            }
         },
         {
             "label": "Install Dependencies",
