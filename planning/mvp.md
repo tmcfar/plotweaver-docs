@@ -1,4 +1,4 @@
-﻿# PlotWeaver MVP Definition
+# PlotWeaver MVP Definition
 ID: 20241114-MVP-001
 
 ## Vision Statement

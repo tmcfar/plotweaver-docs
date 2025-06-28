@@ -1,4 +1,4 @@
-﻿<!-- AI_INSTRUCTIONS: Use data-driven scoring. Provide specific examples 
+<!-- AI_INSTRUCTIONS: Use data-driven scoring. Provide specific examples 
      for risks/benefits. Keep recommendations actionable. -->
 
 # Evaluation: [Feature Name]

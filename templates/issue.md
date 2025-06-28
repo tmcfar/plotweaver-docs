@@ -1,4 +1,4 @@
-﻿<!-- AI_INSTRUCTIONS: Be specific about reproduction steps. 
+<!-- AI_INSTRUCTIONS: Be specific about reproduction steps. 
      Include environment details. Keep description under 100 words. -->
 
 # Issue: [Title]

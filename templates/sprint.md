@@ -1,4 +1,4 @@
-﻿<!-- AI_INSTRUCTIONS: Solo dev sprint = ~20 hours. 
+<!-- AI_INSTRUCTIONS: Solo dev sprint = ~20 hours. 
      Break down into 2-4 hour chunks. Focus on shipped increments. -->
 
 # Sprint: [Number] - [Focus Area]

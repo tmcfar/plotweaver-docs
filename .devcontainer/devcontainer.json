@@ -1,0 +1,66 @@
+{
+  "name": "PlotWeaver Documentation",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  
+  // Features to add to the dev container
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers-contrib/features/pipx-package:1": {
+      "package": "aider-chat"
+    }
+  },
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally
+  "forwardPorts": [],
+
+  // Configure tool-specific properties
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.black-formatter",
+        "charliermarsh.ruff",
+        "yzhang.markdown-all-in-one",
+        "redhat.vscode-yaml",
+        "streetsidesoftware.code-spell-checker",
+        "github.copilot",
+        "github.copilot-chat"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/workspaces/pwdocs/venv/bin/python",
+        "python.terminal.activateEnvironment": true,
+        "python.terminal.activateEnvInCurrentTerminal": true,
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "/bin/bash",
+            "args": ["-c", "source /workspaces/pwdocs/venv/bin/activate && exec bash"]
+          }
+        }
+      }
+    }
+  },
+
+  // Run commands after the container is created
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  
+  // Run commands when attaching to the container
+  "postAttachCommand": "source venv/bin/activate",
+
+  // Environment variables
+  "containerEnv": {
+    "VIRTUAL_ENV": "/workspaces/pwdocs/venv",
+    "PATH": "/workspaces/pwdocs/venv/bin:${PATH}"
+  },
+
+  // Mount local git config
+  "mounts": [
+    "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
+  ],
+
+  // Connect as non-root user
+  "remoteUser": "vscode"
+}

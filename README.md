@@ -1,6 +1,18 @@
-﻿# PlotWeaver Documentation
+# PlotWeaver Documentation
 
-## Quick Start (WSL + Windows)
+## Quick Start
+
+### Option 1: VS Code Dev Container (Recommended)
+1. Open folder in VS Code
+2. When prompted, click "Reopen in Container"
+3. Everything is set up automatically!
+
+### Option 2: VS Code Workspace
+```bash
+code pwdocs.code-workspace  # Auto-setup on open
+```
+
+### Option 3: Manual Setup (WSL + Windows)
 
 **Prerequisites:** WSL2, Docker Desktop, Python 3.8+, Git
 
@@ -14,11 +26,6 @@ cd pwdocs
 # Start developing
 source venv/bin/activate
 aider
-```
-
-**VS Code integration:**
-```bash
-code .  # Opens with proper Python paths and clean explorer
 ```
 
 ### Available Commands
