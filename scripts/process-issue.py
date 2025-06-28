@@ -12,6 +12,14 @@ issue_title = os.environ.get('ISSUE_TITLE')
 issue_body = os.environ.get('ISSUE_BODY', '')
 event_type = os.environ.get('EVENT_TYPE')
 
+# Validate required environment variables
+if not api_key:
+    print("ERROR: OPENROUTER_API_KEY environment variable not set")
+    exit(1)
+if not issue_number or not issue_title:
+    print("ERROR: Required issue environment variables not set")
+    exit(1)
+
 # Clean title for folder name - remove invalid characters
 clean_title = re.sub(r'[<>:"/\\|?*\[\]]', '', issue_title.lower())
 clean_title = re.sub(r'\s+', '-', clean_title.strip('-'))
