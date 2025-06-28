@@ -2,17 +2,12 @@
 
 ## Quick Start
 
-### Option 1: VS Code Dev Container (Recommended)
-1. Open folder in VS Code
-2. When prompted, click "Reopen in Container"
-3. Everything is set up automatically!
-
-### Option 2: VS Code Workspace
+### Option 1: VS Code Workspace (Recommended)
 ```bash
 code pwdocs.code-workspace  # Auto-setup on open
 ```
 
-### Option 3: Manual Setup (WSL + Windows)
+### Option 2: Manual Setup (WSL + Windows)
 
 **Prerequisites:** WSL2, Docker Desktop, Python 3.8+, Git
 
