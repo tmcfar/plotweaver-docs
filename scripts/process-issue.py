@@ -1,78 +1,65 @@
 #!/usr/bin/env python3
 import os
 import json
-import requests
-import re
-from datetime import datetime
+import sys
+from processors.shared_utils import get_issue_type
+from processors.feature_processor import process_feature_proposal
+from processors.current_state_processor import process_current_state_update
 
 # Get environment variables
 api_key = os.environ.get('OPENROUTER_API_KEY')
 issue_number = os.environ.get('ISSUE_NUMBER')
 issue_title = os.environ.get('ISSUE_TITLE')
 issue_body = os.environ.get('ISSUE_BODY', '')
+issue_labels_json = os.environ.get('ISSUE_LABELS', '[]')
 event_type = os.environ.get('EVENT_TYPE')
+
+# Parse labels from JSON
+try:
+    issue_labels = json.loads(issue_labels_json)
+except json.JSONDecodeError:
+    issue_labels = []
 
 # Validate required environment variables
 if not api_key:
     print("ERROR: OPENROUTER_API_KEY environment variable not set")
-    exit(1)
+    sys.exit(1)
 if not issue_number or not issue_title:
     print("ERROR: Required issue environment variables not set")
-    exit(1)
+    sys.exit(1)
 
-# Clean title for folder name - remove invalid characters
-clean_title = re.sub(r'[<>:"/\\|?*\[\]]', '', issue_title.lower())
-clean_title = re.sub(r'\s+', '-', clean_title.strip('-'))
-clean_title = re.sub(r'-+', '-', clean_title)
+# Determine issue type from labels
+issue_type = get_issue_type(issue_labels)
 
-feature_dir = f"features/proposed/{issue_number}-{clean_title}"
+print(f"Processing issue #{issue_number}: {issue_title}")
+print(f"Labels: {issue_labels}")
+print(f"Detected type: {issue_type}")
 
 if event_type == "opened":
-    # Create feature directory
-    os.makedirs(feature_dir, exist_ok=True)
+    success = False
     
-    # Generate documentation using OpenRouter
-    prompt = f"""
-Based on this GitHub issue, create a brief technical specification.
-Follow the template format with sections for Overview, Requirements, and Technical Approach.
-Be concise and specific.
-
-Issue Title: {issue_title}
-Issue Description: {issue_body}
-"""
-    
-    response = requests.post(
-        "https://openrouter.ai/api/v1/chat/completions",
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json"
-        },
-        json={
-            "model": "anthropic/claude-3.5-sonnet",
-            "messages": [{"role": "user", "content": prompt}],
-            "max_tokens": 1000
-        }
-    )
-    
-    if response.status_code == 200:
-        ai_content = response.json()['choices'][0]['message']['content']
+    if issue_type == 'CURRENT_STATE_UPDATE':
+        print("🔄 Processing as current state documentation update...")
+        success = process_current_state_update(api_key, issue_number, issue_title, issue_body)
+        
+    elif issue_type == 'FEATURE_PROPOSAL':
+        print("✨ Processing as feature proposal...")
+        success = process_feature_proposal(api_key, issue_number, issue_title, issue_body)
+        
+    elif issue_type == 'STANDARD_ISSUE':
+        print("📋 Standard issue - no automated processing")
+        success = True  # Not an error, just no processing needed
+        
     else:
-        ai_content = f"Error generating content: {response.status_code} - {response.text}"
+        print(f"❌ Unknown issue type: {issue_type}")
+        success = False
     
-    # Write README
-    with open(f"{feature_dir}/README.md", "w") as f:
-        f.write(f"# Feature: {issue_title}\n\n")
-        f.write(f"Issue: #{issue_number}\n")
-        f.write(f"Created: {datetime.now().strftime('%Y-%m-%d')}\n\n")
-        f.write(ai_content)
+    if not success:
+        print("❌ Processing failed")
+        sys.exit(1)
     
-    # Create status file
-    with open(f"{feature_dir}/status.md", "w") as f:
-        f.write(f"## Status: {issue_title}\n\n")
-        f.write(f"- Created: {datetime.now().strftime('%Y-%m-%d')}\n")
-        f.write("- Status: Proposal\n")
-        f.write("- Stage: Evaluation Pending\n")
-
 elif event_type == "closed":
-    # Move to completed
-    pass
+    print("🔒 Issue closed - no processing needed")
+    
+else:
+    print(f"🔄 Event type '{event_type}' - no processing needed")

@@ -34,6 +34,7 @@ jobs:
         ISSUE_NUMBER: ${{ github.event.issue.number }}
         ISSUE_TITLE: ${{ github.event.issue.title }}
         ISSUE_BODY: ${{ github.event.issue.body }}
+        ISSUE_LABELS: ${{ toJSON(github.event.issue.labels.*.name) }}
         EVENT_TYPE: ${{ github.event.action }}
       run: |
         python scripts/process-issue.py

@@ -1,0 +1,275 @@
+# PlotWeaver Current Sprint Guide
+*Focused development guide for active implementation. For full roadmap, see Implementation Plan.*
+
+## Development Workflow: Claude + Aider Pattern
+
+### How to Use This Guide
+
+**Claude's Role:** Act as technical supervisor and architect for the Aider bot in VSCode
+- Break complex tasks into medium-complexity instructions
+- Provide clear, actionable guidance (not vague or overly prescriptive)
+- Guide investigation when Aider encounters issues
+- Ensure each instruction has clear success criteria
+
+**Workflow Example:**
+```
+User: "Implement staged enrichment for scene generation"
+Claude: "Let's break this into steps:
+1. First, update SceneWriterAgent to generate lean narratives
+2. Create SettingEnrichmentAgent as a new enhancement agent
+3. Modify the pipeline to connect them"
+
+[Provides specific code examples for each step]
+```
+
+**Best Practices:**
+- Give Aider room to implement solutions (don't micromanage)
+- Provide context and rationale for architectural decisions
+- When Aider fails, help diagnose root cause before retrying
+- Keep instructions focused on one component at a time
+
+## Current State Assessment
+
+### What's Working
+- ✅ Git operations with PAT authentication
+- ✅ BaseAgent pattern with 328+ tests passing
+- ✅ Scene generation pipeline (ConceptAgent → PlotAgent → CharacterAgent → SceneWriterAgent)
+- ✅ YAML prompt management system
+- ✅ 90%+ test coverage maintained
+
+### What Needs Enhancement
+- ❌ SceneWriterAgent handles too much (9+ dimensions simultaneously)
+- ❌ No progressive setting elaboration
+- ❌ Missing computational pre-filtering (expensive LLM calls)
+- ❌ No search-based context retrieval
+
+## Current Sprint: Phase 4 - Staged Enrichment
+
+### Goal
+Transform monolithic scene generation into staged pipeline, reducing cognitive load and improving quality.
+
+### Week 1: SceneWriterAgent Refactoring
+
+**1. Update Prompts** (`prompts/scene_writer.yaml`)
+```yaml
+# OLD PROMPT:
+scene_generation:
+  system: "Generate a complete 800-1500 word scene with rich environmental detail..."
+  
+# NEW PROMPT:
+lean_narrative_generation:
+  system: |
+    Generate a clear narrative focusing on:
+    - Plot beats and story progression
+    - Character actions and essential dialogue
+    - Basic scene structure
+    
+    DO NOT include:
+    - Detailed environmental descriptions
+    - Sensory details (will be added later)
+    - Extensive atmosphere building
+    
+    Target length: 600-1000 words
+```
+
+**2. Adjust Agent Expectations**
+```python
+# In SceneWriterAgent.execute_agent():
+def execute_agent(self, context: AgentContext) -> AgentResult:
+    # Add to context for prompt
+    context.generation_mode = "lean_narrative"
+    context.target_length = "600-1000 words"
+    
+    # Generate with reduced scope
+    response = self.llm_client.generate(
+        self._build_lean_prompt(context)
+    )
+    
+    # Don't validate for environmental details
+    return AgentResult(
+        success=True,
+        content=response,
+        metadata={"generation_type": "lean_narrative"}
+    )
+```
+
+**3. Update Tests**
+```python
+# tests/agents/test_scene_writer_agent.py
+def test_lean_narrative_generation():
+    # Adjust expectations
+    assert 600 <= word_count <= 1000  # Reduced from 800-1500
+    assert "environmental details" not in quality_checks  # Removed requirement
+    assert has_plot_beats(result.content)  # Still required
+    assert has_character_actions(result.content)  # Still required
+```
+
+### Week 2: SettingEnrichmentAgent Implementation
+
+**1. Create New Agent** (`src/agents/setting_enrichment_agent.py`)
+```python
+from typing import Dict, Any
+from .base_agent import BaseAgent, AgentContext, AgentResult
+
+class SettingEnrichmentAgent(BaseAgent):
+    """Add environmental and cultural details to lean narrative."""
+    
+    def __init__(self, setting_repository):
+        super().__init__("SettingEnrichmentAgent")
+        self.setting_repo = setting_repository
+        
+    def execute_agent(self, context: AgentContext) -> AgentResult:
+        # Get the lean scene
+        lean_scene = context.current_scene_content
+        
+        # Get location details
+        location = self._get_location_details(context)
+        
+        # Build enhancement prompt
+        prompt = self._build_enhancement_prompt(lean_scene, location)
+        
+        # Generate enhanced scene
+        enhanced = self.llm_client.generate(prompt)
+        
+        return AgentResult(
+            success=True,
+            content=enhanced,
+            metadata={"enhancements_added": ["environment", "sensory", "cultural"]}
+        )
+    
+    def _get_location_details(self, context: AgentContext) -> Dict[str, Any]:
+        location_type = context.scene_metadata.get("location_type", "generic")
+        return self.setting_repo.get_location_for_scene(
+            location_type, 
+            context.scene_metadata
+        )
+```
+
+**2. Create Prompt** (`prompts/setting_enrichment.yaml`)
+```yaml
+setting_enrichment:
+  system: |
+    You are a setting enhancement specialist. Your role is to enrich
+    lean narratives with environmental and sensory details.
+    
+    Given a scene with basic plot and dialogue, add:
+    - Environmental details appropriate to the location
+    - Sensory elements (sounds, smells, lighting)
+    - Cultural markers if relevant
+    - Atmospheric touches
+    
+    IMPORTANT: Do not change plot events or dialogue content.
+    Only ADD descriptive elements.
+```
+
+**3. Update Pipeline** (`src/agent_runner.py`)
+```python
+def run_scene_generation_pipeline(self, scene_spec: dict) -> Scene:
+    # Stage 1: Context preparation
+    context = self.prepare_context(scene_spec)
+    
+    # Stage 2: Lean narrative (modified)
+    lean_result = self.scene_writer.execute_agent(context)
+    context.current_scene_content = lean_result.content
+    
+    # Stage 3: Environmental enhancement (NEW)
+    if self.feature_flags.staged_enrichment:
+        enriched_result = self.setting_enrichment.execute_agent(context)
+        context.current_scene_content = enriched_result.content
+    
+    # Stage 4: Character enhancement (existing)
+    # ... voice, body language, subtext agents ...
+    
+    return Scene(content=context.current_scene_content)
+```
+
+## Next Sprint: Phase 5 - Progressive Setting
+
+### Week 3-4 Preview
+
+**SettingRepository Implementation:**
+```python
+class SettingRepository:
+    """Progressive elaboration for settings."""
+    
+    def __init__(self, project_root: Path):
+        self.templates = self._load_templates()
+        self.instances = {}
+        self.cache = {}
+    
+    def get_location_for_scene(self, location_type: str, context: dict):
+        # Check cache
+        # Check existing instances
+        # Generate from template if needed
+        # Cache and return
+```
+
+**Template Structure:**
+```yaml
+# world/templates/fantasy/tavern.yaml
+location_template:
+  type: "tavern"
+  sensory_defaults:
+    sounds: ["conversation", "laughter", "clinking mugs"]
+    smells: ["ale", "woodsmoke", "food"]
+  atmosphere_options: ["rowdy", "quiet", "mysterious"]
+```
+
+## Development Guidelines
+
+### Error Handling Pattern
+```python
+# Specific exceptions for better debugging
+class SettingEnrichmentError(Exception):
+    """Raised when setting enhancement fails."""
+    pass
+
+# Context managers for resources
+with self.activity_stream.operation("enhance_setting"):
+    try:
+        return self._perform_enhancement()
+    except (APIError, ValidationError) as e:
+        logger.error(f"Setting enhancement failed: {e}")
+        raise SettingEnrichmentError from e
+```
+
+### Feature Flags
+```python
+# src/config/feature_flags.py
+class FeatureFlags:
+    STAGED_ENRICHMENT = True  # Enable new pipeline
+    LEAN_NARRATIVE = True     # SceneWriter changes
+    PROGRESSIVE_SETTING = False  # Next sprint
+```
+
+## Success Criteria
+
+### This Sprint (Phase 4)
+- [ ] SceneWriterAgent generates 600-1000 word lean narratives
+- [ ] SettingEnrichmentAgent adds environment without changing plot
+- [ ] All existing tests still pass
+- [ ] New tests for staged pipeline
+- [ ] Performance: <90 seconds total generation time
+
+### Metrics to Track
+- Token usage before/after staged enrichment
+- Generation time for each stage
+- Quality metrics (via manual review)
+- Memory usage during pipeline
+
+## Common Issues & Solutions
+
+**Issue:** SceneWriterAgent still adding environment details
+- Check prompt is using new lean version
+- Verify context.generation_mode is set
+- Review temperature settings (may need reduction)
+
+**Issue:** SettingEnrichmentAgent changing dialogue
+- Add stronger constraints to prompt
+- Implement diff checking between input/output
+- Consider using edit-based approach instead
+
+**Issue:** Tests failing after changes
+- Update test expectations for word count
+- Remove environment detail assertions
+- Add new tests for staged pipeline
