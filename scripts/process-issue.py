@@ -2,7 +2,7 @@
 import os
 import json
 import sys
-from processors.shared_utils import get_issue_type
+from processors.shared_utils import get_issue_type, validate_issue_number
 from processors.feature_processor import process_feature_proposal
 from processors.current_state_processor import process_current_state_update
 from processors.bug_processor import process_bug_report
@@ -28,6 +28,13 @@ if not api_key:
     sys.exit(1)
 if not issue_number or not issue_title:
     print("ERROR: Required issue environment variables not set")
+    sys.exit(1)
+
+# Validate issue number
+try:
+    issue_number = validate_issue_number(issue_number)
+except ValueError as e:
+    print(f"ERROR: {e}")
     sys.exit(1)
 
 # Determine issue type from labels with title fallback

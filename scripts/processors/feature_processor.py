@@ -3,7 +3,7 @@
 
 import requests
 from .shared_utils import (clean_title_for_filename, ensure_directory, get_current_timestamp,
-                          get_github_metadata, format_github_metadata_markdown)
+                          get_github_metadata, format_github_metadata_markdown, sanitize_for_ai)
 
 
 def process_feature_proposal(api_key, issue_number, issue_title, issue_body, is_duplicate=False, other_types=None):
@@ -16,14 +16,18 @@ def process_feature_proposal(api_key, issue_number, issue_title, issue_body, is_
     # Get GitHub metadata
     github_metadata = get_github_metadata(issue_number, issue_title)
     
+    # Sanitize inputs for AI
+    safe_title = sanitize_for_ai(issue_title)
+    safe_body = sanitize_for_ai(issue_body)
+    
     # Generate documentation using OpenRouter
     prompt = f"""
 Based on this GitHub issue, create a brief technical specification.
 Follow the template format with sections for Overview, Requirements, and Technical Approach.
 Be concise and specific.
 
-Issue Title: {issue_title}
-Issue Description: {issue_body}
+Issue Title: {safe_title}
+Issue Description: {safe_body}
 """
     
     response = requests.post(

@@ -2,7 +2,7 @@
 """Bug report processor - handles bug labeled issues."""
 
 from .shared_utils import (clean_title_for_filename, ensure_directory, get_current_timestamp,
-                          get_github_metadata, format_github_metadata_markdown)
+                          get_github_metadata, format_github_metadata_markdown, escape_markdown)
 
 
 def process_bug_report(api_key, issue_number, issue_title, issue_body, is_duplicate=False, other_types=None):
@@ -26,7 +26,8 @@ def process_bug_report(api_key, issue_number, issue_title, issue_body, is_duplic
     
     content += format_github_metadata_markdown(github_metadata)
     content += "## Issue Description\n\n"
-    content += issue_body
+    # Escape markdown in issue body to prevent formatting issues
+    content += escape_markdown(issue_body)
     content += "\n\n## Status\n\n"
     content += "- Status: Open\n"
     content += "- Priority: TBD\n"

@@ -3,6 +3,8 @@
 
 import os
 import re
+import yaml
+import html
 from datetime import datetime
 
 
@@ -43,33 +45,85 @@ def get_issue_type(labels, title=None):
     return 'STANDARD_ISSUE'
 
 
+def validate_issue_number(issue_number):
+    """Validate and sanitize issue number."""
+    # Remove any non-numeric characters
+    clean_number = re.sub(r'\D', '', str(issue_number))
+    if not clean_number:
+        raise ValueError(f"Invalid issue number: {issue_number}")
+    return clean_number
+
+
+def escape_markdown(text):
+    """Escape markdown special characters."""
+    if not text:
+        return text
+    # Escape markdown special characters
+    text = str(text)
+    for char in ['*', '_', '[', ']', '(', ')', '#', '`', '>', '|', '\\']:
+        text = text.replace(char, '\\' + char)
+    return text
+
+
+def sanitize_for_ai(text):
+    """Sanitize text for AI prompts to prevent injection."""
+    if not text:
+        return text
+    # Remove potential prompt injection patterns
+    text = str(text)
+    # Remove common injection attempts
+    injection_patterns = [
+        r'ignore.*previous.*instructions',
+        r'disregard.*above',
+        r'forget.*everything',
+        r'new.*instructions.*:',
+        r'system.*prompt.*:',
+        r'assistant.*:',
+        r'</.*>',  # HTML/XML tags
+        r'```.*```',  # Code blocks that might contain instructions
+    ]
+    for pattern in injection_patterns:
+        text = re.sub(pattern, '[REMOVED]', text, flags=re.IGNORECASE)
+    return text
+
+
 def get_github_metadata(issue_number, issue_title):
-    """Generate GitHub issue metadata."""
+    """Generate GitHub issue metadata with validation."""
+    # Validate issue number
+    clean_issue_number = validate_issue_number(issue_number)
+    
     return {
-        'github_issue': f"#{issue_number}",
-        'github_url': f"https://github.com/tmcfar/plotweaver-docs/issues/{issue_number}",
-        'issue_title': issue_title,
+        'github_issue': f"#{clean_issue_number}",
+        'github_url': f"https://github.com/tmcfar/plotweaver-docs/issues/{clean_issue_number}",
+        'issue_title': issue_title,  # Will be escaped when formatted
         'processed_date': get_current_timestamp()
     }
 
 
 def format_github_metadata_yaml(metadata):
-    """Format GitHub metadata as YAML frontmatter."""
-    return f"""---
-github_issue: "{metadata['github_issue']}"
-github_url: "{metadata['github_url']}"
-issue_title: "{metadata['issue_title']}"
-processed_date: "{metadata['processed_date']}"
----
-
-"""
+    """Format GitHub metadata as YAML frontmatter with proper escaping."""
+    # Use yaml.dump for safe string escaping
+    yaml_content = {
+        'github_issue': metadata['github_issue'],
+        'github_url': metadata['github_url'],
+        'issue_title': metadata['issue_title'],
+        'processed_date': metadata['processed_date']
+    }
+    
+    # Dump with safe formatting
+    yaml_str = yaml.dump(yaml_content, default_flow_style=False, allow_unicode=True)
+    
+    return f"---\n{yaml_str}---\n\n"
 
 
 def format_github_metadata_markdown(metadata):
-    """Format GitHub metadata as markdown section."""
+    """Format GitHub metadata as markdown section with proper escaping."""
+    # Escape the title for markdown
+    escaped_title = escape_markdown(metadata['issue_title'])
+    
     return f"""## GitHub Issue Reference
 - **Issue**: [{metadata['github_issue']}]({metadata['github_url']})
-- **Title**: {metadata['issue_title']}
+- **Title**: {escaped_title}
 - **Processed**: {metadata['processed_date']}
 
 """

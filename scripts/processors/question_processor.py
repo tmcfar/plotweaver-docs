@@ -2,7 +2,7 @@
 """Question processor - handles question labeled issues."""
 
 from .shared_utils import (clean_title_for_filename, ensure_directory, get_current_timestamp,
-                          get_github_metadata, format_github_metadata_markdown)
+                          get_github_metadata, format_github_metadata_markdown, escape_markdown)
 
 
 def process_question(api_key, issue_number, issue_title, issue_body, is_duplicate=False, other_types=None):
@@ -26,7 +26,8 @@ def process_question(api_key, issue_number, issue_title, issue_body, is_duplicat
     
     content += format_github_metadata_markdown(github_metadata)
     content += "## Question\n\n"
-    content += issue_body
+    # Escape markdown in issue body to prevent formatting issues
+    content += escape_markdown(issue_body)
     content += "\n\n## Answer\n\n"
     content += "*To be answered...*\n"
     content += "\n\n## Status\n\n"

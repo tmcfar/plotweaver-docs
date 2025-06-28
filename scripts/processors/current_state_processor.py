@@ -3,7 +3,7 @@
 
 import requests
 from .shared_utils import (clean_title_for_filename, ensure_directory, get_current_timestamp,
-                          get_github_metadata, format_github_metadata_markdown)
+                          get_github_metadata, format_github_metadata_markdown, sanitize_for_ai)
 from .changelog_manager import create_core_doc_metadata_section
 
 
@@ -18,6 +18,10 @@ def process_current_state_update(api_key, issue_number, issue_title, issue_body,
     # Get GitHub metadata
     github_metadata = get_github_metadata(issue_number, issue_title)
     
+    # Sanitize inputs for AI
+    safe_title = sanitize_for_ai(issue_title)
+    safe_body = sanitize_for_ai(issue_body)
+    
     # Analyze content and determine approach using AI
     analysis_prompt = f"""
 You are Claude Code processing a current state documentation update.
@@ -25,8 +29,8 @@ You are Claude Code processing a current state documentation update.
 TASK: Analyze this issue content and determine how to process it using our established documentation pipeline.
 
 ISSUE CONTENT:
-Title: {issue_title}
-Body: {issue_body}
+Title: {safe_title}
+Body: {safe_body}
 
 APPROACH OPTIONS:
 1. SPLIT_APPROACH: Content contains both current state and proposed features
