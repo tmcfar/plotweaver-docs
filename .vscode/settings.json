@@ -31,7 +31,8 @@
         "**/.venv": true,
         "**/env": true,
         "**/.env": true,
-        "**/.aider*": true
+        "**/.aider*": true,
+        "**/.*": true
     },
     // Respect gitignore in explorer
     "explorer.excludeGitIgnore": true,
