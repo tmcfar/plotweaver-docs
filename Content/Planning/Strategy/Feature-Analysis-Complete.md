@@ -17,7 +17,23 @@ This document analyzes all proposed features grouped by their primary core compo
 ## Core Component Impact Analysis
 
 ### Agent System (7 features)
-The Agent System represents the core AI infrastructure that drives PlotWeaver's content generation and quality management. This component cluster focuses on intelligent agent coordination, from specialized micro-agents for character voice and body language to sophisticated orchestration systems that optimize model selection and quality loops. The system emphasizes cost optimization through smart model routing (targeting 50-80% cost reduction), quality management through intelligent orchestration, and security through comprehensive permission systems. Most features are classified as "Must Have" with "Large" complexity, indicating this is both critical path and architecturally challenging work that requires careful sequencing and coordination.
+Core infrastructure for AI-driven content generation and quality management.
+
+**Features:**
+
+**Micro-Agent Specialization (ID: 20)** - Replace monolithic character enhancement with specialized micro-agents for voice, body language, and subtext. Evaluation recommends proceeding with significant simplification, starting with unified CharacterEnhancementAgent first.
+
+**Agent Permission System (ID: 44)** - Comprehensive permission system enforcing strict domain boundaries between agents, preventing unauthorized modifications while ensuring data integrity through registry-based approach with inheritance support.
+
+**Narrative Architect System (ID: 50)** - Cost-optimizing two-tier AI system where expensive "Narrative Architect" models plan complex changes and cheaper "Executor" models implement edits, targeting 60-80% cost reduction while improving narrative coherence.
+
+**Intelligent Model Selection (ID: 51)** - Sophisticated model selection system optimizing task-to-model matching across multiple providers using "5x5" architecture with five model tiers and five quality profiles, targeting 50%+ cost reduction with 95%+ satisfaction.
+
+**Architecture Review System (ID: 53)** - Architecture Review Agent analyzing project complexity after setup to provide optimized agent configurations and model selections, enabling informed cost/quality decisions before writing begins.
+
+**Intelligent Quality Orchestrator (ID: 55)** - Intelligent quality orchestration system reducing quality loop iterations by 60% through smart restart decisions and impact-based management, preventing unnecessary LLM calls while maintaining 95% quality standards.
+
+**Quality Orchestration (ID: 56)** - System analyzing change impact and selectively restarting only affected agents, reducing quality loop iterations by 60% through smart restart decisions and impact-based quality management.
 
 | ID | Feature | Impact | Complexity | Strategic Value | Status |
 |----|---------|--------|------------|-----------------|--------|
@@ -36,7 +52,17 @@ The Agent System represents the core AI infrastructure that drives PlotWeaver's 
 - **Risk**: High complexity concentration suggests need for careful sequencing
 
 ### Storage & Data Management (4 features)
-The Storage & Data Management component addresses PlotWeaver's scalability challenges as manuscripts grow beyond 20-30 scenes to novel-length works of 100+ scenes. This cluster emphasizes intelligent data handling through progressive elaboration (just-in-time setting development), smart metadata inference (targeting 80% YAML reduction), and sophisticated context retrieval (three-stage pipeline from raw search to AI curation). The focus is on making large, complex projects manageable while maintaining consistency and performance. All features are "Must Have" and "Core" strategic value, reflecting their foundational importance for supporting serious authors working on substantial projects.
+Systems for content persistence, search, and metadata management.
+
+**Features:**
+
+**Metadata Inference Engine (ID: 46)** - Intelligent metadata inference system reducing YAML storage complexity by 80% through automated metadata generation and relationship inference, using smart defaults and schema optimization to eliminate overwhelming metadata maintenance.
+
+**Search Index Abstraction (ID: 47)** - Search index abstraction layer decoupling storage from search functionality, enabling future vector search capabilities while maintaining SQLite integration through clean provider interface supporting multiple backend implementations.
+
+**Progressive Setting System (ID: 49)** - Progressive setting elaboration system evolving with the story using three-tier approach, combining genre defaults, user overrides, and dynamically discovered details to balance worldbuilding depth with writing flow.
+
+**Context Intelligence Pipeline (EVAL-005)** - Three-stage pipeline progressively filtering context from comprehensive to highly relevant: SQLite search retrieval, computational filtering using digital humanities techniques, and LLM-based final curation for thematic meaning.
 
 | ID | Feature | Impact | Complexity | Strategic Value | Status |
 |----|---------|--------|------------|-----------------|--------|
@@ -52,7 +78,13 @@ The Storage & Data Management component addresses PlotWeaver's scalability chall
 - **Search Evolution**: Moving from simple storage to intelligent context retrieval
 
 ### User Interface & Experience (2 features)
-The User Interface & Experience component focuses on making PlotWeaver accessible to both experienced writers who want direct control and newcomers who need structured guidance. The UX Flow System provides a VS Code-inspired dual-path interface that offers streamlined access for power users while providing guided workflows for those needing assistance. The Feature Pipeline System addresses the solo developer workflow challenge with a lightweight, git-based feature management process targeting <4 week implementation cycles with minimal overhead. Both features are foundational to user adoption and retention, emphasizing familiar patterns (VS Code) and efficient processes optimized for individual developers rather than teams.
+Systems for user interaction, workflow management, and experience optimization.
+
+**Features:**
+
+**UX Flow System (ID: 48)** - VS Code-inspired dual-path user interface providing both streamlined and guided experiences, enabling direct access for experienced writers while offering structured assistance for those needing guidance.
+
+**Feature Pipeline System (ID: 52)** - Lightweight feature management system optimized for solo developers, providing clear tracking from idea capture through implementation using structured yet minimal process, targeting <4 week cycles with <10 minutes weekly overhead.
 
 | ID | Feature | Impact | Complexity | Strategic Value | Status |
 |----|---------|--------|------------|-----------------|--------|
@@ -66,7 +98,17 @@ The User Interface & Experience component focuses on making PlotWeaver accessibl
 - **Foundation**: These enable more sophisticated user interactions in future phases
 
 ### Infrastructure & Operations (4 features)
-The Infrastructure & Operations component provides the foundational systems that enable safe, secure, and cost-effective operation of PlotWeaver. This cluster emphasizes operational excellence through automated security checks (pre-commit linting for dangerous patterns), comprehensive cost tracking (enabling validation of 40-60% cost reduction claims), safe deployment practices (feature flags for staged rollouts), and advanced dependency management for series consistency. These features represent the "boring but critical" infrastructure that enables everything else to work reliably. The mix of complexities from Small (security linter) to Large (dependency management) allows for quick wins while building toward sophisticated capabilities.
+Core system infrastructure, security, and operational capabilities.
+
+**Features:**
+
+**Basic Security Linter (ID: 42)** - Basic security linter running pre-commit to detect common dangerous code patterns in issue processing scripts, focusing on top 5 critical patterns to provide immediate security value with minimal complexity.
+
+**Cost Tracking System (ID: 43)** - Comprehensive cost tracking and analytics system monitoring LLM usage across all agents, enabling ROI validation, cost optimization, and transparent billing while providing data to validate 40-60% cost reduction claims.
+
+**Feature Flag System (ID: 45)** - Comprehensive feature flag infrastructure enabling safe staged rollouts and A/B testing, providing granular control over feature deployment with context-aware evaluation, supporting data-driven feature development.
+
+**Dependency Management (EVAL-001)** - Advanced dependency management system for long-form series, automatically tracking consistency across world rules, character continuity, plot threads, and timeline integrity with conflict detection and resolution strategies.
 
 | ID | Feature | Impact | Complexity | Strategic Value | Status |
 |----|---------|--------|------------|-----------------|--------|
@@ -82,7 +124,15 @@ The Infrastructure & Operations component provides the foundational systems that
 - **Deployment Safety**: Feature flags enable safe rollout of complex features
 
 ### Specialized Systems (3 features)
-The Specialized Systems component represents advanced capabilities that serve specific user segments or use cases rather than core functionality. This cluster includes experimental approaches like elastic agent architecture (dynamic resource scaling based on project complexity), user-controlled prompt customization (advanced power user features), and progressive setting examples (templates demonstrating sophisticated worldbuilding workflows). The mixed priority levels from "Should Have" to "Won't Have" reflect their nature as enhancements rather than essentials. These features represent the product's potential evolution toward more sophisticated, specialized capabilities while maintaining focus on core writing assistance functionality.
+Domain-specific systems for particular use cases or advanced capabilities.
+
+**Features:**
+
+**Example Progressive Setting (ID: 23)** - Template/example implementation of progressive setting system enabling "just-in-time" setting development, starting with genre-appropriate defaults and expanding naturally during writing while maintaining consistency.
+
+**Elastic Agent Architecture (EVAL-002)** - Dynamic agent spawning based on project complexity, allowing PlotWeaver to scale computational resources precisely to match story needs instead of fixed agent assignments. Evaluation recommends deferring due to complexity concerns.
+
+**Prompt Customization (EVAL-003)** - User-owned prompt customization and reference management system allowing users to customize AI prompts and model selection directly in their GitHub repository. Evaluation recommends rejecting due to complexity and scope concerns.
 
 | ID | Feature | Impact | Complexity | Strategic Value | Status |
 |----|---------|--------|------------|-----------------|--------|
