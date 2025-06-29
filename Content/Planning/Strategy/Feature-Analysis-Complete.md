@@ -26,16 +26,6 @@ Core infrastructure for AI-driven content generation and quality management.
 
 **Quality Orchestration (ID: 56)** - System analyzing change impact and selectively restarting only affected agents, reducing quality loop iterations by 60% through smart restart decisions and impact-based quality management.
 
-| ID | Feature | Impact | Complexity | Strategic Value | Status |
-|----|---------|--------|------------|-----------------|--------|
-| 20 | Micro-Agent Specialization | Should Have | Large | Growth | PROCEED (simplified) |
-| 44 | Agent Permission System | Must Have | Medium | Core | Approved |
-| 50 | Narrative Architect System | Must Have | Large | Core | Approved |
-| 51 | Intelligent Model Selection | Must Have | Large | Core | Approved |
-| 53 | Architecture Review System | Must Have | Large | Core | Approved |
-| 55 | Intelligent Quality Orchestrator | Must Have | Large | Core | Approved |
-| 56 | Quality Orchestration | Should Have | Medium | Growth | Approved |
-
 **Component Analysis:**
 - **High Priority**: 6/7 features are Must Have, indicating agent system is critical path
 - **Complexity**: Predominantly Large complexity features requiring significant architectural work
@@ -55,13 +45,6 @@ Systems for content persistence, search, and metadata management.
 
 **Context Intelligence Pipeline (EVAL-005)** - Three-stage pipeline progressively filtering context from comprehensive to highly relevant: SQLite search retrieval, computational filtering using digital humanities techniques, and LLM-based final curation for thematic meaning.
 
-| ID | Feature | Impact | Complexity | Strategic Value | Status |
-|----|---------|--------|------------|-----------------|--------|
-| 46 | Metadata Inference Engine | Must Have | Large | Core | Approved |
-| 47 | Search Index Abstraction | Must Have | Medium | Core | Approved |
-| 49 | Progressive Setting System | Must Have | Large | Core | Approved |
-| EVAL-005 | Context Intelligence Pipeline | Must Have | Large | Core | PROCEED (staged) |
-
 **Component Analysis:**
 - **Strategic Importance**: All features are Must Have/Core, indicating foundational nature
 - **Scalability Focus**: Features address scaling challenges for large manuscripts
@@ -76,11 +59,6 @@ Systems for user interaction, workflow management, and experience optimization.
 **UX Flow System (ID: 48)** - VS Code-inspired dual-path user interface providing both streamlined and guided experiences, enabling direct access for experienced writers while offering structured assistance for those needing guidance.
 
 **Feature Pipeline System (ID: 52)** - Lightweight feature management system optimized for solo developers, providing clear tracking from idea capture through implementation using structured yet minimal process, targeting <4 week cycles with <10 minutes weekly overhead.
-
-| ID | Feature | Impact | Complexity | Strategic Value | Status |
-|----|---------|--------|------------|-----------------|--------|
-| 48 | UX Flow System | Must Have | Large | Core | Approved |
-| 52 | Feature Pipeline System | Must Have | Medium | Core | Approved |
 
 **Component Analysis:**
 - **User-Centric**: Both features directly impact user experience and workflow
@@ -101,13 +79,6 @@ Core system infrastructure, security, and operational capabilities.
 
 **Dependency Management (EVAL-001)** - Advanced dependency management system for long-form series, automatically tracking consistency across world rules, character continuity, plot threads, and timeline integrity with conflict detection and resolution strategies.
 
-| ID | Feature | Impact | Complexity | Strategic Value | Status |
-|----|---------|--------|------------|-----------------|--------|
-| 42 | Basic Security Linter | Must Have | Small | Core | Approved |
-| 43 | Cost Tracking System | Must Have | Medium | Core | Approved |
-| 45 | Feature Flag System | Must Have | Medium | Core | Approved |
-| EVAL-001 | Dependency Management | Must Have | Large | Core | PROCEED (staged) |
-
 **Component Analysis:**
 - **Operational Excellence**: Focus on security, cost management, and deployment safety
 - **Risk Management**: Security and dependency features address system reliability
@@ -124,12 +95,6 @@ Domain-specific systems for particular use cases or advanced capabilities.
 **Elastic Agent Architecture (EVAL-002)** - Dynamic agent spawning based on project complexity, allowing PlotWeaver to scale computational resources precisely to match story needs instead of fixed agent assignments. Evaluation recommends deferring due to complexity concerns.
 
 **Prompt Customization (EVAL-003)** - User-owned prompt customization and reference management system allowing users to customize AI prompts and model selection directly in their GitHub repository. Evaluation recommends rejecting due to complexity and scope concerns.
-
-| ID | Feature | Impact | Complexity | Strategic Value | Status |
-|----|---------|--------|------------|-----------------|--------|
-| 23 | Example Progressive Setting | Should Have | Large | Growth | Template/Example |
-| EVAL-002 | Elastic Agent Architecture | Could Have | Large | Growth | DEFER |
-| EVAL-003 | Prompt Customization | Won't Have | Large | Enhancement | REJECT |
 
 **Component Analysis:**
 - **Mixed Priority**: Range from template examples to rejected features
@@ -150,13 +115,7 @@ graph TD
 ```
 
 ### Dependency Matrix
-| Component | Agent System | Storage | UI/UX | Infrastructure | Specialized |
-|-----------|--------------|---------|-------|----------------|-------------|
-| Agent System | - | High | Medium | High | Low |
-| Storage | Medium | - | High | Medium | Medium |
-| UI/UX | Low | Medium | - | Low | High |
-| Infrastructure | Medium | Low | Low | - | Low |
-| Specialized | High | High | Medium | Low | - |
+Cross-component dependencies show that Agent System and Infrastructure form the foundation, with Storage and UI/UX building on top, and Specialized Systems requiring the most mature foundation.
 
 ## Implementation Sequencing
 
