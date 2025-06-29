@@ -1,6 +1,8 @@
 # PlotWeaver API Reference
 
-PlotWeaver is a Python library for AI-powered story generation using a multi-agent architecture. This document provides a comprehensive reference for all public APIs.
+**Last Updated:** 2025-06-29
+
+PlotWeaver is a Python library for AI-powered story generation using a sophisticated multi-agent architecture. This document provides a comprehensive reference for all public APIs and components.
 
 ## Table of Contents
 
@@ -263,6 +265,139 @@ Generates actual story content.
 
 **Purpose:** Writes individual scenes based on outlines and character information.
 
+#### SettingEnrichmentAgent
+
+Enhances scenes with environmental and sensory details.
+
+**Location:** `src/plotweaver/agents/enhancement/setting_enrichment_agent.py`
+
+**Purpose:** Adds environmental descriptions, sensory details, and atmospheric elements to scenes.
+
+### Quality Control Agents
+
+#### CharacterVoiceAgent
+
+Validates dialogue authenticity and character voice consistency.
+
+**Location:** `src/plotweaver/agents/quality/character_voice_agent.py`
+
+**Purpose:** Ensures character dialogue maintains consistent voice, speech patterns, and vocabulary throughout the story.
+
+**Key Methods:**
+- `validate_input(context)`: Validates scene content contains character dialogue
+- `process(context)`: Analyzes dialogue for voice consistency
+- `validate_output(result)`: Ensures quality assessment is complete
+
+#### CharacterBodyLanguageAgent
+
+Validates physical actions and non-verbal communication.
+
+**Location:** `src/plotweaver/agents/quality/character_body_language_agent.py`
+
+**Purpose:** Ensures physical descriptions, gestures, and body language are appropriate and consistent.
+
+**Key Methods:**
+- `validate_input(context)`: Validates scene content contains physical descriptions
+- `process(context)`: Analyzes body language and physical actions
+- `validate_output(result)`: Ensures action consistency assessment is complete
+
+#### CharacterSubtextAgent
+
+Analyzes hidden meanings and relationship dynamics.
+
+**Location:** `src/plotweaver/agents/quality/character_subtext_agent.py`
+
+**Purpose:** Validates subtext, power dynamics, and emotional undertones in character interactions.
+
+**Key Methods:**
+- `validate_input(context)`: Validates scene content contains character interactions
+- `process(context)`: Analyzes subtext and relationship dynamics
+- `validate_output(result)`: Ensures subtext analysis is complete
+
+#### SensoryContinuityAgent
+
+Validates environmental consistency and sensory details.
+
+**Location:** `src/plotweaver/agents/quality/sensory_continuity_agent.py`
+
+**Purpose:** Ensures environmental descriptions and sensory elements maintain consistency throughout the story.
+
+**Key Methods:**
+- `validate_input(context)`: Validates scene content contains environmental descriptions
+- `process(context)`: Analyzes sensory continuity and environmental consistency
+- `validate_output(result)`: Ensures continuity assessment is complete
+
+#### StyleAgent
+
+Validates writing style consistency across scenes.
+
+**Location:** `src/plotweaver/agents/quality/style_agent.py`
+
+**Purpose:** Ensures prose style, tone, and narrative voice remain consistent throughout the story.
+
+**Key Methods:**
+- `validate_input(context)`: Validates scene content for style analysis
+- `process(context)`: Analyzes writing style and narrative voice
+- `validate_output(result)`: Ensures style consistency assessment is complete
+
+## Core Services
+
+### FileManager
+
+Handles file system operations and content management.
+
+**Location:** `src/plotweaver/storage/file_manager.py`
+
+#### Key Methods
+
+- `save_file(path, content)`: Save content to specified file path
+- `load_file(path)`: Load content from specified file path
+- `ensure_directory(path)`: Create directory structure if it doesn't exist
+- `list_files(directory, pattern)`: List files matching pattern in directory
+- `delete_file(path)`: Remove file from file system
+
+### MetadataManager
+
+Manages YAML metadata and validation.
+
+**Location:** `src/plotweaver/storage/metadata_manager.py`
+
+#### Key Methods
+
+- `save_metadata(path, metadata)`: Save metadata as YAML file
+- `load_metadata(path)`: Load and validate metadata from YAML file
+- `validate_schema(metadata, schema)`: Validate metadata against schema
+- `merge_metadata(base, updates)`: Merge metadata dictionaries
+- `get_metadata_schema(type)`: Get validation schema for metadata type
+
+### SearchService
+
+Provides content search and indexing capabilities.
+
+**Location:** `src/plotweaver/search/search_service.py`
+
+#### Key Methods
+
+- `index_content(content_id, content)`: Add content to search index
+- `search(query, filters)`: Search indexed content with optional filters
+- `update_index(content_id, content)`: Update existing content in index
+- `remove_from_index(content_id)`: Remove content from search index
+- `rebuild_index()`: Rebuild entire search index
+
+### ValidationService
+
+Provides data validation and schema checking.
+
+**Location:** `src/plotweaver/utils/validation.py`
+
+#### Key Methods
+
+- `validate_data(data, schema)`: Validate data against JSON schema
+- `validate_yaml(yaml_content)`: Validate YAML syntax and structure
+- `validate_agent_context(context)`: Validate agent context completeness
+- `validate_agent_result(result)`: Validate agent result format
+- `get_validation_errors(data, schema)`: Get detailed validation error messages
+
 ## Orchestration
 
 ### AgentRunner
@@ -286,6 +421,71 @@ Run multiple agents sequentially, passing results between them.
 - `initial_context`: Starting context
 
 **Returns:** List of results from all agents
+
+##### `execute_single_agent`
+
+```python
+execute_single_agent(agent: BaseAgent, context: AgentContext) -> AgentResult
+```
+
+Execute a single agent with error handling and logging.
+
+**Parameters:**
+- `agent`: Agent to execute
+- `context`: Agent context
+
+**Returns:** Agent execution result
+
+### QualityLoop
+
+Manages iterative quality improvement process.
+
+**Location:** `src/plotweaver/orchestration/quality_loop.py`
+
+#### Constructor
+
+```python
+QualityLoop(quality_agents: List[BaseAgent], max_iterations: int = 3, quality_threshold: float = 0.8)
+```
+
+**Parameters:**
+- `quality_agents`: List of quality control agents to run
+- `max_iterations`: Maximum number of improvement iterations
+- `quality_threshold`: Minimum quality score to accept content
+
+#### Key Methods
+
+##### `run_quality_check`
+
+```python
+run_quality_check(content: str, context: AgentContext) -> Dict[str, Any]
+```
+
+Run all quality agents on content and return aggregated results.
+
+**Parameters:**
+- `content`: Content to validate
+- `context`: Agent context with project information
+
+**Returns:** Dictionary containing:
+- `overall_score`: Aggregated quality score (0.0-1.0)
+- `agent_results`: Individual results from each quality agent
+- `passed`: Boolean indicating if quality threshold was met
+- `improvements`: List of suggested improvements
+
+##### `iterate_improvements`
+
+```python
+iterate_improvements(content: str, context: AgentContext) -> str
+```
+
+Iteratively improve content until quality threshold is met.
+
+**Parameters:**
+- `content`: Initial content to improve
+- `context`: Agent context
+
+**Returns:** Improved content that meets quality standards
 
 ## Prompt Management
 
@@ -378,20 +578,100 @@ pm.initialize_project(
 ### Running Agents
 
 ```python
-from plotweaver.agents.setting import ConceptAgent, PlotAgent
+from plotweaver.agents.setting import ConceptAgent, PlotAgent, CharacterAgent
+from plotweaver.agents.writing import SceneWriterAgent
+from plotweaver.agents.enhancement import SettingEnrichmentAgent
 from plotweaver.orchestration import AgentRunner
 from plotweaver.agents.base import AgentContext
 
 # Create agents
 concept_agent = ConceptAgent()
 plot_agent = PlotAgent()
+character_agent = CharacterAgent()
+scene_writer = SceneWriterAgent()
+setting_enrichment = SettingEnrichmentAgent()
 
 # Create initial context
 context = AgentContext(project_path="/path/to/project")
 
-# Run agents
+# Run foundation agents
+foundation_agents = [concept_agent, plot_agent, character_agent]
 runner = AgentRunner()
-results = runner.execute_agents([concept_agent, plot_agent], context)
+foundation_results = runner.execute_agents(foundation_agents, context)
+
+# Run content generation
+content_agents = [scene_writer, setting_enrichment]
+content_results = runner.execute_agents(content_agents, context)
+```
+
+### Running Quality Loop
+
+```python
+from plotweaver.agents.quality import (
+    CharacterVoiceAgent, CharacterBodyLanguageAgent, CharacterSubtextAgent,
+    SensoryContinuityAgent, StyleAgent
+)
+from plotweaver.orchestration import QualityLoop
+from plotweaver.agents.base import AgentContext
+
+# Create quality agents
+quality_agents = [
+    CharacterVoiceAgent(),
+    CharacterBodyLanguageAgent(),
+    CharacterSubtextAgent(),
+    SensoryContinuityAgent(),
+    StyleAgent()
+]
+
+# Create quality loop
+quality_loop = QualityLoop(
+    quality_agents=quality_agents,
+    max_iterations=3,
+    quality_threshold=0.85
+)
+
+# Run quality validation
+context = AgentContext(project_path="/path/to/project")
+scene_content = "Your scene content here..."
+
+quality_results = quality_loop.run_quality_check(scene_content, context)
+print(f"Quality Score: {quality_results['overall_score']}")
+print(f"Passed: {quality_results['passed']}")
+
+# Iteratively improve content
+improved_content = quality_loop.iterate_improvements(scene_content, context)
+```
+
+### Using Core Services
+
+```python
+from plotweaver.storage import FileManager, MetadataManager
+from plotweaver.search import SearchService
+from plotweaver.utils import ValidationService
+
+# File operations
+file_manager = FileManager()
+file_manager.save_file("scenes/chapter1/scene1.md", scene_content)
+loaded_content = file_manager.load_file("scenes/chapter1/scene1.md")
+
+# Metadata management
+metadata_manager = MetadataManager()
+scene_metadata = {
+    "chapter": 1,
+    "scene": 1,
+    "characters": ["Alice", "Bob"],
+    "setting": "Forest clearing"
+}
+metadata_manager.save_metadata("scenes/chapter1/scene1.yaml", scene_metadata)
+
+# Search functionality
+search_service = SearchService()
+search_service.index_content("scene_1_1", scene_content)
+results = search_service.search("forest", {"chapter": 1})
+
+# Validation
+validation_service = ValidationService()
+is_valid = validation_service.validate_agent_context(context)
 ```
 
 ### Using Prompt Manager
@@ -417,21 +697,85 @@ print(prompt["user_prompt"])
 
 PlotWeaver uses a hierarchy of custom exceptions:
 
+**Base Exceptions:**
 - `PlotWeaverError`: Base exception for all PlotWeaver errors
+
+**Configuration Exceptions:**
 - `ConfigurationError`: Configuration-related errors
-- `GitOperationError`: Git operation failures
-- `StorageError`: File storage errors
-- `AgentValidationError`: Agent context validation errors
-- `AgentExecutionError`: Agent execution failures
 - `AgentConfigurationError`: Agent configuration errors
+
+**Execution Exceptions:**
+- `AgentExecutionError`: Agent execution failures
+- `AgentValidationError`: Agent context validation errors
+- `QualityLoopError`: Quality validation process errors
+
+**Storage Exceptions:**
+- `StorageError`: File storage errors
+- `GitOperationError`: Git operation failures
+- `MetadataError`: YAML metadata processing errors
+
+**Service Exceptions:**
+- `SearchServiceError`: Search indexing and query errors
+- `ValidationError`: Data validation failures
+- `PromptManagerError`: Prompt template processing errors
+
+**External Integration Exceptions:**
+- `LLMClientError`: Language model API errors
+- `OpenRouterError`: OpenRouter-specific API errors
+- `RateLimitError`: API rate limiting errors
+
+### Exception Handling Examples
+
+```python
+from plotweaver.core.exceptions import (
+    AgentExecutionError, QualityLoopError, StorageError
+)
+
+try:
+    # Run agent execution
+    result = agent_runner.execute_agents(agents, context)
+except AgentExecutionError as e:
+    print(f"Agent execution failed: {e.message}")
+    print(f"Failed agent: {e.agent_name}")
+except QualityLoopError as e:
+    print(f"Quality validation failed: {e.message}")
+    print(f"Quality score: {e.quality_score}")
+except StorageError as e:
+    print(f"Storage operation failed: {e.message}")
+    print(f"File path: {e.file_path}")
+```
 
 ## Best Practices
 
+### Project Management
 1. **Project Initialization**: Always use `ProjectManager.initialize_project()` to set up new projects
-2. **Agent Execution**: Use `AgentRunner` for coordinating multiple agents
-3. **Error Handling**: Catch specific exceptions to handle different error scenarios
-4. **Configuration**: Store project-specific settings in the configuration dictionary
-5. **Git Integration**: Let PlotWeaver handle git operations automatically
+2. **Configuration Management**: Store project-specific settings in the configuration dictionary
+3. **Git Integration**: Let PlotWeaver handle git operations automatically
+4. **Directory Structure**: Use the standard PlotWeaver project structure for consistency
+
+### Agent Execution
+1. **Sequential Execution**: Run foundation agents (Concept, Plot, Character) before content generation
+2. **Context Management**: Ensure AgentContext contains all required data before agent execution
+3. **Quality Validation**: Always run QualityLoop after content generation for consistency
+4. **Error Handling**: Catch specific exceptions to handle different error scenarios appropriately
+
+### Performance Optimization
+1. **Parallel Quality Checks**: QualityLoop runs quality agents in parallel for better performance
+2. **Caching**: Cache frequently accessed metadata and search results
+3. **Batch Operations**: Process multiple scenes in batches when possible
+4. **Resource Management**: Monitor LLM API usage and implement rate limiting
+
+### Quality Assurance
+1. **Quality Thresholds**: Set appropriate quality thresholds based on project requirements
+2. **Iterative Improvement**: Use QualityLoop's iterative improvement for consistent results
+3. **Validation**: Validate all inputs and outputs using ValidationService
+4. **Testing**: Implement comprehensive testing for custom agents and workflows
+
+### Security and Privacy
+1. **API Key Management**: Store API keys securely and never commit them to version control
+2. **Data Validation**: Always validate user inputs and external data
+3. **Access Control**: Implement appropriate access controls for multi-user projects
+4. **Audit Logging**: Log all significant operations for debugging and compliance
 
 ## Version Compatibility
 
