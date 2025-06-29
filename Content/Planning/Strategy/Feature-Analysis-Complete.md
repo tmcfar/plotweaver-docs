@@ -17,7 +17,7 @@ This document analyzes all proposed features grouped by their primary core compo
 ## Core Component Impact Analysis
 
 ### Agent System (7 features)
-Core infrastructure for AI-driven content generation and quality management.
+The Agent System represents the core AI infrastructure that drives PlotWeaver's content generation and quality management. This component cluster focuses on intelligent agent coordination, from specialized micro-agents for character voice and body language to sophisticated orchestration systems that optimize model selection and quality loops. The system emphasizes cost optimization through smart model routing (targeting 50-80% cost reduction), quality management through intelligent orchestration, and security through comprehensive permission systems. Most features are classified as "Must Have" with "Large" complexity, indicating this is both critical path and architecturally challenging work that requires careful sequencing and coordination.
 
 | ID | Feature | Impact | Complexity | Strategic Value | Status |
 |----|---------|--------|------------|-----------------|--------|
@@ -36,7 +36,7 @@ Core infrastructure for AI-driven content generation and quality management.
 - **Risk**: High complexity concentration suggests need for careful sequencing
 
 ### Storage & Data Management (4 features)
-Systems for content persistence, search, and metadata management.
+The Storage & Data Management component addresses PlotWeaver's scalability challenges as manuscripts grow beyond 20-30 scenes to novel-length works of 100+ scenes. This cluster emphasizes intelligent data handling through progressive elaboration (just-in-time setting development), smart metadata inference (targeting 80% YAML reduction), and sophisticated context retrieval (three-stage pipeline from raw search to AI curation). The focus is on making large, complex projects manageable while maintaining consistency and performance. All features are "Must Have" and "Core" strategic value, reflecting their foundational importance for supporting serious authors working on substantial projects.
 
 | ID | Feature | Impact | Complexity | Strategic Value | Status |
 |----|---------|--------|------------|-----------------|--------|
@@ -52,7 +52,7 @@ Systems for content persistence, search, and metadata management.
 - **Search Evolution**: Moving from simple storage to intelligent context retrieval
 
 ### User Interface & Experience (2 features)
-Systems for user interaction, workflow management, and experience optimization.
+The User Interface & Experience component focuses on making PlotWeaver accessible to both experienced writers who want direct control and newcomers who need structured guidance. The UX Flow System provides a VS Code-inspired dual-path interface that offers streamlined access for power users while providing guided workflows for those needing assistance. The Feature Pipeline System addresses the solo developer workflow challenge with a lightweight, git-based feature management process targeting <4 week implementation cycles with minimal overhead. Both features are foundational to user adoption and retention, emphasizing familiar patterns (VS Code) and efficient processes optimized for individual developers rather than teams.
 
 | ID | Feature | Impact | Complexity | Strategic Value | Status |
 |----|---------|--------|------------|-----------------|--------|
@@ -66,7 +66,7 @@ Systems for user interaction, workflow management, and experience optimization.
 - **Foundation**: These enable more sophisticated user interactions in future phases
 
 ### Infrastructure & Operations (4 features)
-Core system infrastructure, security, and operational capabilities.
+The Infrastructure & Operations component provides the foundational systems that enable safe, secure, and cost-effective operation of PlotWeaver. This cluster emphasizes operational excellence through automated security checks (pre-commit linting for dangerous patterns), comprehensive cost tracking (enabling validation of 40-60% cost reduction claims), safe deployment practices (feature flags for staged rollouts), and advanced dependency management for series consistency. These features represent the "boring but critical" infrastructure that enables everything else to work reliably. The mix of complexities from Small (security linter) to Large (dependency management) allows for quick wins while building toward sophisticated capabilities.
 
 | ID | Feature | Impact | Complexity | Strategic Value | Status |
 |----|---------|--------|------------|-----------------|--------|
@@ -82,7 +82,7 @@ Core system infrastructure, security, and operational capabilities.
 - **Deployment Safety**: Feature flags enable safe rollout of complex features
 
 ### Specialized Systems (3 features)
-Domain-specific systems for particular use cases or advanced capabilities.
+The Specialized Systems component represents advanced capabilities that serve specific user segments or use cases rather than core functionality. This cluster includes experimental approaches like elastic agent architecture (dynamic resource scaling based on project complexity), user-controlled prompt customization (advanced power user features), and progressive setting examples (templates demonstrating sophisticated worldbuilding workflows). The mixed priority levels from "Should Have" to "Won't Have" reflect their nature as enhancements rather than essentials. These features represent the product's potential evolution toward more sophisticated, specialized capabilities while maintaining focus on core writing assistance functionality.
 
 | ID | Feature | Impact | Complexity | Strategic Value | Status |
 |----|---------|--------|------------|-----------------|--------|
