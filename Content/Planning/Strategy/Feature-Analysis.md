@@ -7,45 +7,63 @@ This document tracks feature proposals and their relative priority based on impa
 
 ## Classification Guide
 
-Impact:
+**Priority (MoSCoW):**
 - Must Have: Critical for core functionality
 - Should Have: Important but not critical
 - Could Have: Beneficial but optional
 - Won't Have: Out of scope for now
 
-Complexity:
-- Small: Single component, clear scope
-- Medium: Multiple components, manageable dependencies
-- Large: System-wide impact, complex dependencies
-- XLarge: Architectural changes, high risk
+**Effort Estimation:**
+- Quick (1-2 days): Single component, clear implementation
+- Medium (3-7 days): Multiple components, some research needed
+- Large (1-3 weeks): System-wide changes, significant testing
+- Epic (1+ months): Major architectural changes, high uncertainty
 
-Strategic Value:
+**Strategic Value:**
 - Core: Essential to product vision
 - Growth: Enables future capabilities
 - Enhancement: Improves existing features
-- Optional: Nice to have
+- Maintenance: Technical debt, refactoring
+
+**Learning Curve:**
+- Known: Using familiar technologies/patterns
+- Research: Need to learn new concepts/tools
+- Experimental: Uncharted territory, high uncertainty
+
+**User Impact:**
+- High: Directly improves user experience
+- Medium: Behind-the-scenes improvements users will notice
+- Low: Technical improvements, minimal user-facing changes
 
 ## Current Analysis
 
 ### Must Have Features
-| ID | Feature | Complexity | Strategic Value | Dependencies | Notes |
-|----|---------|------------|-----------------|--------------|-------|
-|    |         |            |                 |              |       |
+| ID | Feature | Effort | Strategic Value | User Impact | Learning | Dependencies | Notes |
+|----|---------|--------|-----------------|-------------|----------|--------------|-------|
+|    |         |        |                 |             |          |              |       |
 
 ### Should Have Features
-| ID | Feature | Complexity | Strategic Value | Dependencies | Notes |
-|----|---------|------------|-----------------|--------------|-------|
-|    |         |            |                 |              |       |
+| ID | Feature | Effort | Strategic Value | User Impact | Learning | Dependencies | Notes |
+|----|---------|--------|-----------------|-------------|----------|--------------|-------|
+|    |         |        |                 |             |          |              |       |
 
 ### Could Have Features
-| ID | Feature | Complexity | Strategic Value | Dependencies | Notes |
-|----|---------|------------|-----------------|--------------|-------|
-|    |         |            |                 |              |       |
+| ID | Feature | Effort | Strategic Value | User Impact | Learning | Dependencies | Notes |
+|----|---------|--------|-----------------|-------------|----------|--------------|-------|
+|    |         |        |                 |             |          |              |       |
 
 ### Won't Have (Now)
-| ID | Feature | Complexity | Strategic Value | Rationale | Future Consideration |
-|----|---------|------------|-----------------|-----------|---------------------|
-|    |         |            |                 |           |                     |
+| ID | Feature | Effort | Strategic Value | Rationale | Future Consideration |
+|----|---------|--------|-----------------|-----------|---------------------|
+|    |         |        |                 |           |                     |
+
+### Quick Wins (High Impact, Low Effort)
+Features that provide immediate value with minimal investment:
+- [Feature links]
+
+### Learning Projects (Medium Impact, Research Required)
+Features that require skill development but offer growth:
+- [Feature links]
 
 ## Dependencies Graph
 ```mermaid
@@ -56,6 +74,14 @@ graph TD
 
 ## Strategic Groupings
 
+### Sprint-Ready (Next 1-2 weeks)
+Features ready for immediate implementation:
+- [Feature links]
+
+### Research Phase (Next month)
+Features requiring investigation before implementation:
+- [Feature links]
+
 ### Core Platform
 Features that enhance the fundamental capabilities:
 - [Feature links]
@@ -64,8 +90,8 @@ Features that enhance the fundamental capabilities:
 Features that improve the writing experience:
 - [Feature links]
 
-### Technical Debt
-Features that improve system health:
+### Technical Health
+Features that improve system maintainability:
 - [Feature links]
 
 ### Future Growth
@@ -77,7 +103,22 @@ Track significant prioritization decisions and rationale:
 
 YYYY-MM-DD: [Decision and reasoning]
 
+## Solo Developer Guidelines
+
+**Prioritization Tips:**
+- Balance user-facing features with technical improvements (70/30 split)
+- Consider your energy levels - tackle complex features when fresh
+- Group related features to maintain context and momentum
+- Don't underestimate research time for new technologies
+
+**Time Management:**
+- Quick wins can provide motivation between larger efforts
+- Learning projects are investments - budget extra time
+- Dependencies can block progress - identify and resolve early
+- Document decisions to avoid re-researching later
+
 ## Notes
 - Features can move between categories as priorities shift
 - Dependencies may affect final implementation order
-- Complexity may change as architecture evolves
+- Effort estimates may change as architecture evolves
+- Consider personal motivation and energy when scheduling work
