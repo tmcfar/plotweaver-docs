@@ -30,7 +30,9 @@ aider \
 --file Content/Issues/Features-Proposed/Progressive-Settings-Evaluation.md \
 --file Content/Issues/Features-Proposed/Quality-Orchestration-Evaluation.md \
 --file Content/Planning/Strategy/Feature-Analysis.md \
---message "Please populate the Feature-Analysis.md with a comprehensive list of all proposed features from the Features-Proposed directory. 
+--message "
+
+Please populate the Feature-Analysis.md with a comprehensive list of all proposed features from the Features-Proposed directory. 
 
 For each feature:
 - Extract core functionality and purpose

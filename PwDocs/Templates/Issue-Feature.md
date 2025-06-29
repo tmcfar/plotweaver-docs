@@ -5,16 +5,6 @@ Ref: [reference if applicable]
 
 [1-12 line description focusing on what the feature enables for users and why it matters to the product. Explain the problem being solved and how this creates value.]
 
-## Classification
-**Impact:** *[Must Have | Should Have | Could Have | Won't Have]*
-**Complexity:** *[Small | Medium | Large | Extreme]*
-**Strategic Value:** *[Core | Growth | Enhancement | Optional]*
-
-Complexity Legend:
-- Small: Single component, clear scope
-- Medium: Multiple components, manageable dependencies
-- Large: System-wide impact, complex dependencies
-- Extreme: ⚠️ Architectural overhaul - requires scope reduction before consideration
 
 ## User Value
 Problem:
@@ -43,10 +33,6 @@ Strategic Alignment:
 - 🟡 [Component]: Moderate change requiring careful testing
 - 🔴 [Component]: Complex change with significant impact
 
-Complexity Legend:
-🟢 Low: Isolated change, clear scope
-🟡 Medium: Multiple components, manageable dependencies
-🔴 High: System-wide impact, complex dependencies
 
 ## Implementation
 Dependencies:
