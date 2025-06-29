@@ -4,7 +4,7 @@
 
 ### Option 1: VS Code Workspace (Recommended)
 ```bash
-code pwdocs.code-workspace  # Auto-setup on open
+code PwDocs.code-workspace  # Auto-setup on open
 ```
 
 ### Option 2: Manual Setup (WSL + Windows)
@@ -46,7 +46,7 @@ gp                      # git push
 gdoc                    # Quick doc commit (add all, commit, push)
 
 # Project Management
-python scripts/process-issue.py  # Process GitHub issues
+python PwDocs/Scripts/process_issue.py  # Process GitHub issues
 ```
 
 ## Purpose
@@ -62,42 +62,38 @@ AI-generated technical documentation for PlotWeaver novel writing platform. Trig
 ## Repository Structure
 
 ```
-pwdocs/
-├── README.md                    # This file
-├── requirements.txt             # Python dependencies
-├── active-features.md           # Currently active features
-├── roadmap.md                   # Product roadmap overview
+/
+├── Readme.md                    # This file
+├── Requirements.txt            # Python dependencies
+├── Claude.md                   # AI assistant instructions
+├── PwDocs.code-workspace      # VS Code workspace
 │
-├── .setup/                      # Setup and configuration
-│   ├── setup.sh                # Main setup script
-│   ├── setup-git-aliases.sh    # Git aliases installer
-│   ├── .git-aliases            # Git aliases definitions
-│   ├── DEV_SETUP.md            # Development environment guide
-│   ├── GIT_ALIASES_GUIDE.md    # Git aliases documentation
-│   └── MIGRATION_SUMMARY.md    # Codespaces → WSL migration notes
-│
-├── .vscode/                     # VS Code configuration
-│   ├── settings.json           # Editor settings
-│   ├── tasks.json              # Build tasks
-│   └── extensions.json         # Recommended extensions
-│
-├── Claude-Docs/                 # AI-generated documentation
+├── ClaudeDocs/                 # AI-generated documentation
 │   ├── agent-system.md         # Agent system architecture
 │   ├── architecture-design.md  # Overall system design
 │   └── sprint.yaml             # Current sprint planning
 │
-├── planning/                    # Project planning documents
-│   ├── mvp.md                  # Minimum viable product
-│   └── roadmap.md              # Detailed roadmap
+├── Content/                    # Documentation content
+│   ├── Architecture/          # System architecture docs
+│   ├── Issues/                # Processed GitHub issues
+│   │   ├── Features-Proposed/ # Feature proposals
+│   │   ├── Bugs/             # Bug reports
+│   │   └── Questions/        # Q&A documentation
+│   ├── Planning/             # Project planning
+│   │   ├── MVP.md           # Minimum viable product
+│   │   └── Roadmap.md       # Detailed roadmap
+│   └── Technical/            # Technical documentation
+│       ├── API/             # API documentation
+│       └── Guides/          # Technical guides
 │
-├── scripts/                     # Automation scripts
-│   └── process-issue.py        # GitHub issue processor
-│
-└── templates/                   # Document templates
-    ├── feature-evaluation.md   # Feature evaluation template
-    ├── mvp.md                  # MVP template
-    ├── sprint.md               # Sprint template
-    └── system-spec.md          # System specification template
+└── PwDocs/                     # Documentation tooling
+    ├── Processors/            # Content processors
+    ├── Scripts/               # Automation scripts
+    │   └── process_issue.py   # GitHub issue processor
+    └── Templates/             # Document templates
+        ├── Issue-Feature.md   # Feature template
+        ├── Planning-MVP.md    # MVP template
+        └── Spec-System.md     # System spec template
 ```
 
 ## Development

@@ -1,0 +1,129 @@
+/* Custom styling for Markdown Preview Enhanced */
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    color: #2c3e50;
+    font-weight: 600;
+    margin-top: 24px;
+    margin-bottom: 16px;
+}
+
+h1 { font-size: 2em; border-bottom: 1px solid #eaecef; }
+h2 { font-size: 1.5em; border-bottom: 1px solid #eaecef; }
+h3 { font-size: 1.25em; }
+h4 { font-size: 1em; }
+
+/* Code blocks */
+pre, code {
+    background-color: #f6f8fa;
+    border-radius: 3px;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+}
+
+pre {
+    padding: 16px;
+    overflow: auto;
+    line-height: 1.45;
+}
+
+code {
+    padding: 0.2em 0.4em;
+    font-size: 85%;
+}
+
+/* Links */
+a {
+    color: #0366d6;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Tables */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 16px 0;
+}
+
+th, td {
+    padding: 6px 13px;
+    border: 1px solid #dfe2e5;
+}
+
+th {
+    background-color: #f6f8fa;
+    font-weight: 600;
+}
+
+tr:nth-child(2n) {
+    background-color: #f8f9fa;
+}
+
+/* Blockquotes */
+blockquote {
+    margin: 0;
+    padding: 0 1em;
+    color: #6a737d;
+    border-left: 0.25em solid #dfe2e5;
+}
+
+/* Lists */
+ul, ol {
+    padding-left: 2em;
+}
+
+li + li {
+    margin-top: 0.25em;
+}
+
+/* Status badges */
+.status-badge {
+    display: inline-block;
+    padding: 0.2em 0.6em;
+    font-size: 0.9em;
+    font-weight: 600;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 3px;
+    margin: 0 0.2em;
+}
+
+.status-pending { background-color: #ffd700; color: #000; }
+.status-completed { background-color: #28a745; color: #fff; }
+.status-in-progress { background-color: #0366d6; color: #fff; }
+
+/* File paths */
+.file-path {
+    font-family: monospace;
+    background-color: #f6f8fa;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+}
+
+/* Custom containers */
+.warning {
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 12px;
+    margin: 16px 0;
+}
+
+.note {
+    background-color: #e7f3ff;
+    border-left: 4px solid #0366d6;
+    padding: 12px;
+    margin: 16px 0;
+}
+
+/* Directory structure */
+.directory-tree {
+    font-family: monospace;
+    white-space: pre;
+    color: #24292e;
+    line-height: 1.5;
+}

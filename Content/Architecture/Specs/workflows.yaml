@@ -1,0 +1,139 @@
+---
+schema_version: "1.0.0"
+last_updated: "2025-06-28"
+type: "process_flows"
+maintainer: "PlotWeaver Team"
+
+workflows:
+  scene_generation:
+    name: "Scene Generation Pipeline"
+    description: "End-to-end scene creation and validation"
+    triggers:
+      - type: "user_request"
+        endpoint: "/api/v1/scenes/generate"
+      - type: "automated"
+        schedule: "chapter_completion"
+    
+    steps:
+      - name: "concept_creation"
+        agent: "ConceptAgent"
+        timeout: "5m"
+        retry:
+          max_attempts: 3
+          backoff: "exponential"
+        output_validation:
+          schema: "concept_schema"
+          required_fields:
+            - "genre"
+            - "theme"
+            - "setting"
+
+      - name: "plot_generation"
+        agent: "PlotAgent"
+        requires:
+          - "concept_creation"
+        timeout: "10m"
+        retry:
+          max_attempts: 2
+          backoff: "linear"
+        output_validation:
+          schema: "plot_schema"
+
+      - name: "character_creation"
+        agent: "CharacterAgent"
+        requires:
+          - "plot_generation"
+        timeout: "5m"
+        retry:
+          max_attempts: 2
+          backoff: "linear"
+        output_validation:
+          schema: "character_schema"
+
+      - name: "scene_writing"
+        agent: "SceneWriterAgent"
+        requires:
+          - "character_creation"
+        timeout: "15m"
+        retry:
+          max_attempts: 3
+          backoff: "exponential"
+        output_validation:
+          schema: "scene_schema"
+          min_length: 800
+          max_length: 1500
+
+      - name: "setting_enrichment"
+        agent: "SettingEnrichmentAgent"
+        requires:
+          - "scene_writing"
+        timeout: "5m"
+        retry:
+          max_attempts: 2
+          backoff: "linear"
+        output_validation:
+          schema: "enriched_scene_schema"
+
+      - name: "quality_validation"
+        parallel: true
+        steps:
+          - name: "voice_check"
+            agent: "CharacterVoiceAgent"
+            timeout: "3m"
+          - name: "body_language_check"
+            agent: "CharacterBodyLanguageAgent"
+            timeout: "3m"
+          - name: "subtext_check"
+            agent: "CharacterSubtextAgent"
+            timeout: "3m"
+          - name: "sensory_check"
+            agent: "SensoryContinuityAgent"
+            timeout: "3m"
+
+    error_handling:
+      retry_policy:
+        max_attempts: 3
+        backoff: "exponential"
+      failure_actions:
+        - log_error
+        - notify_user
+        - create_recovery_point
+
+    monitoring:
+      metrics:
+        - workflow_duration
+        - step_duration
+        - error_rate
+        - quality_score
+      alerts:
+        - condition: "workflow_duration > 30m"
+          severity: "warning"
+        - condition: "error_rate > 10%"
+          severity: "critical"
+
+rollback_procedures:
+  scene_generation:
+    triggers:
+      - "quality_threshold_not_met"
+      - "user_rejection"
+      - "system_error"
+    steps:
+      - "create_snapshot"
+      - "revert_to_last_stable"
+      - "notify_orchestrator"
+
+circuit_breakers:
+  quality_loop:
+    max_iterations: 3
+    cooldown_period: "5m"
+    failure_threshold: 2
+
+recovery_points:
+  - after: "concept_creation"
+    save: ["concept_data"]
+  - after: "plot_generation"
+    save: ["plot_data", "concept_data"]
+  - after: "character_creation"
+    save: ["character_data", "plot_data"]
+  - after: "scene_writing"
+    save: ["scene_content", "metadata"]

@@ -50,5 +50,29 @@
         "**/.mypy_cache": true
     },
     "search.useIgnoreFiles": true,
-    "search.useGlobalIgnoreFiles": true
+    "search.useGlobalIgnoreFiles": true,
+    
+    // Markdown Preview Enhanced settings
+    "markdown-preview-enhanced.previewTheme": "none.css",
+    "markdown-preview-enhanced.customCSS": ".vscode/markdown.dark.css",
+    "markdown-preview-enhanced.automaticallyShowPreviewOfMarkdownBeingEdited": true,
+    "markdown-preview-enhanced.scrollSync": true,
+    "markdown-preview-enhanced.breakOnSingleNewLine": false,
+    "markdown-preview-enhanced.enableTypographer": true,
+    "markdown-preview-enhanced.enableWikiLinkSyntax": true,
+    "markdown-preview-enhanced.wikiLinkFileExtension": ".md",
+    "markdown-preview-enhanced.previewPanePosition": "right",
+    "markdown-preview-enhanced.codeBlockTheme": "github",
+    "markdown-preview-enhanced.mermaidTheme": "default",
+    "markdown-preview-enhanced.tocDepth": 3,
+    
+    // VS Code Markdown settings
+    "[markdown]": {
+        "editor.wordWrap": "on",
+        "editor.quickSuggestions": {
+            "comments": "on",
+            "strings": "on",
+            "other": "on"
+        }
+    }
 }

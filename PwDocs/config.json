@@ -1,0 +1,13 @@
+{
+    "plotweaver": {
+        "windows_path": "",
+        "wsl_path": "/home/tmcfar/dev/pw",
+        "docs_dir": "docs/planning",
+        "comment": "Leave paths empty for auto-detection"
+    },
+    "sync": {
+        "auto_sync": false,
+        "verify_copy": true,
+        "backup": false
+    }
+}
