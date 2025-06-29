@@ -25,11 +25,6 @@ This document tracks feature proposals and their relative priority based on impa
 - Enhancement: Improves existing features
 - Maintenance: Technical debt, refactoring
 
-**Learning Curve:**
-- Known: Using familiar technologies/patterns
-- Research: Need to learn new concepts/tools
-- Experimental: Uncharted territory, high uncertainty
-
 **User Impact:**
 - High: Directly improves user experience
 - Medium: Behind-the-scenes improvements users will notice
@@ -38,19 +33,19 @@ This document tracks feature proposals and their relative priority based on impa
 ## Current Analysis
 
 ### Must Have Features
-| ID | Feature | Effort | Strategic Value | User Impact | Learning | Dependencies | Notes |
-|----|---------|--------|-----------------|-------------|----------|--------------|-------|
-|    |         |        |                 |             |          |              |       |
+| ID | Feature | Effort | Strategic Value | User Impact | Dependencies | Notes |
+|----|---------|--------|-----------------|-------------|--------------|-------|
+|    |         |        |                 |             |              |       |
 
 ### Should Have Features
-| ID | Feature | Effort | Strategic Value | User Impact | Learning | Dependencies | Notes |
-|----|---------|--------|-----------------|-------------|----------|--------------|-------|
-|    |         |        |                 |             |          |              |       |
+| ID | Feature | Effort | Strategic Value | User Impact | Dependencies | Notes |
+|----|---------|--------|-----------------|-------------|--------------|-------|
+|    |         |        |                 |             |              |       |
 
 ### Could Have Features
-| ID | Feature | Effort | Strategic Value | User Impact | Learning | Dependencies | Notes |
-|----|---------|--------|-----------------|-------------|----------|--------------|-------|
-|    |         |        |                 |             |          |              |       |
+| ID | Feature | Effort | Strategic Value | User Impact | Dependencies | Notes |
+|----|---------|--------|-----------------|-------------|--------------|-------|
+|    |         |        |                 |             |              |       |
 
 ### Won't Have (Now)
 | ID | Feature | Effort | Strategic Value | Rationale | Future Consideration |
@@ -61,9 +56,6 @@ This document tracks feature proposals and their relative priority based on impa
 Features that provide immediate value with minimal investment:
 - [Feature links]
 
-### Learning Projects (Medium Impact, Research Required)
-Features that require skill development but offer growth:
-- [Feature links]
 
 ## Dependencies Graph
 ```mermaid
@@ -109,11 +101,9 @@ YYYY-MM-DD: [Decision and reasoning]
 - Balance user-facing features with technical improvements (70/30 split)
 - Consider your energy levels - tackle complex features when fresh
 - Group related features to maintain context and momentum
-- Don't underestimate research time for new technologies
 
 **Time Management:**
 - Quick wins can provide motivation between larger efforts
-- Learning projects are investments - budget extra time
 - Dependencies can block progress - identify and resolve early
 - Document decisions to avoid re-researching later
 
