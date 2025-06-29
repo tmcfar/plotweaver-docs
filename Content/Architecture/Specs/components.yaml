@@ -21,6 +21,7 @@ components:
       dependencies:
         - PromptManager
         - ProjectConfig
+        - OpenRouterClient
       health_check: "/health/concept-agent"
       scaling:
         cpu_intensive: false
@@ -36,13 +37,56 @@ components:
         - ConceptAgent
         - CharacterAgent
         - PromptManager
+        - OpenRouterClient
       health_check: "/health/plot-agent"
       scaling:
         cpu_intensive: false
         memory_intensive: true
         concurrent_limit: 1
 
-    # [Other agents with similar enhanced metadata]
+    CharacterAgent:
+      type: "agent"
+      description: "Character profile creation and development"
+      input: "Story concept and plot requirements"
+      output: "Character profiles in characters/*.yaml"
+      dependencies:
+        - PromptManager
+        - OpenRouterClient
+      health_check: "/health/character-agent"
+      scaling:
+        cpu_intensive: false
+        memory_intensive: true
+        concurrent_limit: 1
+
+    SceneWriterAgent:
+      type: "agent"
+      description: "Scene content generation with narrative structure"
+      input: "Scene specifications and character profiles"
+      output: "Scene content in markdown format"
+      dependencies:
+        - PlotAgent
+        - CharacterAgent
+        - PromptManager
+        - OpenRouterClient
+      health_check: "/health/scene-writer-agent"
+      scaling:
+        cpu_intensive: false
+        memory_intensive: true
+        concurrent_limit: 1
+
+    SettingEnrichmentAgent:
+      type: "agent"
+      description: "Scene enhancement with environmental and sensory details"
+      input: "Base scene content"
+      output: "Enhanced scene with setting details"
+      dependencies:
+        - PromptManager
+        - OpenRouterClient
+      health_check: "/health/setting-enrichment-agent"
+      scaling:
+        cpu_intensive: false
+        memory_intensive: true
+        concurrent_limit: 1
       
   quality_agents:
     CharacterVoiceAgent:
@@ -59,24 +103,173 @@ components:
       error_handling:
         retry_limit: 3
         fallback: "pass-through"
+      dependencies:
+        - PromptManager
+        - OpenRouterClient
 
-    # [Other quality agents with similar metadata]
+    CharacterBodyLanguageAgent:
+      type: "agent"
+      description: "Validates physical actions and non-verbal communication"
+      domain: "Body language, gestures, physical descriptions"
+      input_validation:
+        required_fields:
+          - "scene_content"
+          - "character_profiles"
+      error_handling:
+        retry_limit: 3
+        fallback: "pass-through"
+      dependencies:
+        - PromptManager
+        - OpenRouterClient
+
+    CharacterSubtextAgent:
+      type: "agent"
+      description: "Analyzes hidden meanings and relationship dynamics"
+      domain: "Subtext, power dynamics, emotional undertones"
+      input_validation:
+        required_fields:
+          - "scene_content"
+          - "character_relationships"
+      error_handling:
+        retry_limit: 3
+        fallback: "pass-through"
+      dependencies:
+        - PromptManager
+        - OpenRouterClient
+
+    SensoryContinuityAgent:
+      type: "agent"
+      description: "Ensures environmental consistency and sensory details"
+      domain: "Setting descriptions, sensory elements, world consistency"
+      input_validation:
+        required_fields:
+          - "scene_content"
+          - "setting_data"
+      error_handling:
+        retry_limit: 3
+        fallback: "pass-through"
+      dependencies:
+        - PromptManager
+        - OpenRouterClient
+
+    StyleAgent:
+      type: "agent"
+      description: "Maintains writing style consistency across scenes"
+      domain: "Prose style, tone, narrative voice"
+      input_validation:
+        required_fields:
+          - "scene_content"
+          - "style_guide"
+      error_handling:
+        retry_limit: 3
+        fallback: "pass-through"
+      dependencies:
+        - PromptManager
+        - OpenRouterClient
 
   orchestration:
     AgentRunner:
       type: "service"
       description: "Coordinates agent execution and workflow"
       functionality: "Manages the agent pipeline and execution flow"
-      api:
-        run_agent:
-          endpoint: "/api/v1/agents/run"
-          method: "POST"
-          rate_limit: "10/minute"
+      dependencies:
+        - GitManager
+        - ProjectConfig
+        - PromptManager
       scaling:
         stateless: true
         concurrent_limit: 5
 
-    # [Other orchestration components with similar metadata]
+    QualityLoop:
+      type: "service"
+      description: "Manages iterative quality improvement process"
+      functionality: "Coordinates quality agents and improvement cycles"
+      dependencies:
+        - AgentRunner
+        - QualityAgents
+      scaling:
+        stateless: true
+        concurrent_limit: 3
+
+  core_services:
+    GitManager:
+      type: "service"
+      description: "Git repository management and version control"
+      functionality: "Handles git operations, commits, and repository state"
+      dependencies:
+        - FileManager
+      scaling:
+        stateless: false
+        concurrent_limit: 1
+
+    ProjectConfig:
+      type: "service"
+      description: "Project configuration and settings management"
+      functionality: "Loads and validates project configuration"
+      dependencies: []
+      scaling:
+        stateless: true
+        concurrent_limit: 10
+
+    FileManager:
+      type: "service"
+      description: "File system operations and content management"
+      functionality: "Handles file I/O, directory management"
+      dependencies: []
+      scaling:
+        stateless: true
+        concurrent_limit: 5
+
+    MetadataManager:
+      type: "service"
+      description: "YAML metadata management and validation"
+      functionality: "Manages scene metadata and contracts"
+      dependencies:
+        - FileManager
+      scaling:
+        stateless: true
+        concurrent_limit: 5
+
+    SearchService:
+      type: "service"
+      description: "Content search and indexing capabilities"
+      functionality: "Full-text search across project content"
+      dependencies:
+        - FileManager
+      scaling:
+        stateless: true
+        concurrent_limit: 3
+
+  external_clients:
+    OpenRouterClient:
+      type: "client"
+      description: "LLM API integration for AI model access"
+      functionality: "Handles API calls to OpenRouter service"
+      dependencies: []
+      scaling:
+        stateless: true
+        concurrent_limit: 10
+        rate_limited: true
+
+  utilities:
+    PromptManager:
+      type: "service"
+      description: "Prompt template management and rendering"
+      functionality: "Loads and processes prompt templates"
+      dependencies:
+        - FileManager
+      scaling:
+        stateless: true
+        concurrent_limit: 10
+
+    ValidationService:
+      type: "service"
+      description: "Data validation and schema checking"
+      functionality: "Validates YAML schemas and data contracts"
+      dependencies: []
+      scaling:
+        stateless: true
+        concurrent_limit: 10
 
 component_relationships:
   ConceptAgent:

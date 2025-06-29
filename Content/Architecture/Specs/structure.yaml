@@ -57,27 +57,65 @@ directory_structure:
             - agent_result.py
             - base_agent.py
             - exceptions.py
-          purpose: "Core agent infrastructure"
+          purpose: "Core agent infrastructure and base classes"
         enhancement:
           files:
             - setting_enrichment_agent.py
-          purpose: "Enhancement capabilities"
+          purpose: "Scene and setting enhancement capabilities"
         quality:
           files:
             - __init__.py
-          purpose: "Quality control systems"
+            - character_voice_agent.py
+            - character_body_language_agent.py
+            - character_subtext_agent.py
+            - sensory_continuity_agent.py
+            - style_agent.py
+          purpose: "Quality control and validation systems"
         setting:
           files:
             - character_agent.py
             - concept_agent.py
             - plot_agent.py
-          purpose: "Setting and character management"
+          purpose: "Story foundation and character management"
         writing:
           files:
             - scene_writer_agent.py
-          purpose: "Content generation"
+          purpose: "Content generation and narrative writing"
       
-      # [Remaining directory structure as before, but with added purpose annotations]
+      core:
+        files:
+          - config.py
+          - git_manager.py
+          - project_config.py
+        purpose: "Core system services and configuration"
+      
+      migration:
+        files:
+          - openrouter_client.py
+        purpose: "External API integration and migration utilities"
+      
+      orchestration:
+        files:
+          - agent_runner.py
+          - quality_loop.py
+        purpose: "Workflow coordination and execution management"
+      
+      search:
+        files:
+          - search_service.py
+        purpose: "Content discovery and indexing"
+      
+      storage:
+        files:
+          - file_manager.py
+          - metadata_manager.py
+        purpose: "File system and metadata management"
+      
+      utils:
+        files:
+          - prompt_manager.py
+          - validation.py
+        purpose: "Utility functions and validation helpers"
 
 monitoring_points:
   - path: "/src/plotweaver/agents/base"

@@ -53,9 +53,13 @@ config_schema:
       required: true
       enum:
         - "gpt-4"
+        - "gpt-4-turbo"
         - "claude-3-opus"
         - "claude-3-sonnet"
-        - "anthropic-haiku"
+        - "claude-3-haiku"
+        - "anthropic/claude-3-opus"
+        - "anthropic/claude-3-sonnet"
+        - "anthropic/claude-3-haiku"
     temperature:
       type: "float"
       required: true

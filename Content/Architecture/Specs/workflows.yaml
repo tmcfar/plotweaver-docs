@@ -75,20 +75,39 @@ workflows:
           schema: "enriched_scene_schema"
 
       - name: "quality_validation"
+        service: "QualityLoop"
         parallel: true
         steps:
           - name: "voice_check"
             agent: "CharacterVoiceAgent"
             timeout: "3m"
+            retry:
+              max_attempts: 2
+              backoff: "linear"
           - name: "body_language_check"
             agent: "CharacterBodyLanguageAgent"
             timeout: "3m"
+            retry:
+              max_attempts: 2
+              backoff: "linear"
           - name: "subtext_check"
             agent: "CharacterSubtextAgent"
             timeout: "3m"
+            retry:
+              max_attempts: 2
+              backoff: "linear"
           - name: "sensory_check"
             agent: "SensoryContinuityAgent"
             timeout: "3m"
+            retry:
+              max_attempts: 2
+              backoff: "linear"
+          - name: "style_check"
+            agent: "StyleAgent"
+            timeout: "3m"
+            retry:
+              max_attempts: 2
+              backoff: "linear"
 
     error_handling:
       retry_policy:
@@ -127,6 +146,19 @@ circuit_breakers:
     max_iterations: 3
     cooldown_period: "5m"
     failure_threshold: 2
+    recovery_strategy: "graceful_degradation"
+  
+  openrouter_api:
+    max_failures: 5
+    cooldown_period: "2m"
+    failure_threshold: 3
+    recovery_strategy: "exponential_backoff"
+  
+  git_operations:
+    max_failures: 3
+    cooldown_period: "1m"
+    failure_threshold: 2
+    recovery_strategy: "manual_intervention"
 
 recovery_points:
   - after: "concept_creation"
