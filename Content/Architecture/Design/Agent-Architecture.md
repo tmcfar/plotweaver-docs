@@ -1,5 +1,7 @@
 # Agent Architecture
 
+Last Updated: 2025-06-29
+
 ## System Overview
 
 ```mermaid
@@ -8,7 +10,12 @@ classDiagram
     BaseAgent <|-- PlotAgent
     BaseAgent <|-- CharacterAgent
     BaseAgent <|-- SceneWriterAgent
-    BaseAgent <|-- QualityAgent
+    BaseAgent <|-- SettingEnrichmentAgent
+    BaseAgent <|-- CharacterVoiceAgent
+    BaseAgent <|-- CharacterBodyLanguageAgent
+    BaseAgent <|-- CharacterSubtextAgent
+    BaseAgent <|-- SensoryContinuityAgent
+    BaseAgent <|-- StyleAgent
     
     class BaseAgent {
         +AgentContext context
@@ -17,12 +24,16 @@ classDiagram
         #validate_input()
         #process()
         #validate_output()
+        #_generate_content()
+        #_get_prompt_template()
     }
 
     class AgentContext {
         +add_data()
         +get_data()
         +update_data()
+        +has_data()
+        +get_all_data()
     }
 
     class AgentResult {
@@ -30,6 +41,19 @@ classDiagram
         +metadata
         +success
         +errors
+        +warnings
+    }
+
+    class AgentRunner {
+        +execute_agent()
+        +execute_workflow()
+        +handle_errors()
+    }
+
+    class QualityLoop {
+        +run_quality_checks()
+        +iterate_improvements()
+        +validate_quality()
     }
 ```
 
@@ -103,14 +127,90 @@ classDiagram
   - Style consistency
   - Narrative flow
 
-### Quality Control (agents/quality/)
-- Purpose: Content validation and improvement
-- Input: Generated content
-- Output: Quality assessment and fixes
+### Enhancement (agents/enhancement/)
+
+#### SettingEnrichmentAgent
+- Purpose: Scene enhancement with environmental and sensory details
+- Input: Base scene content
+- Output: Enhanced scene with setting details
 - Key responsibilities:
-  - Style checking
-  - Consistency validation
-  - Error detection
+  - Environmental detail enhancement
+  - Sensory description enrichment
+  - Atmosphere development
+
+### Orchestration (orchestration/)
+
+#### AgentRunner
+- Purpose: Agent execution coordination and workflow management
+- Input: Agent execution requests and context
+- Output: Coordinated agent results
+- Key responsibilities:
+  - Agent lifecycle management
+  - Workflow coordination
+  - Error handling and recovery
+  - Context management between agents
+
+#### QualityLoop
+- Purpose: Iterative quality improvement process management
+- Input: Content requiring quality validation
+- Output: Quality-validated and improved content
+- Key responsibilities:
+  - Quality agent coordination
+  - Iterative improvement cycles
+  - Quality threshold validation
+  - Improvement convergence detection
+
+### Quality Control (agents/quality/)
+
+#### CharacterVoiceAgent
+- Purpose: Dialogue authenticity and voice consistency validation
+- Domain: Words spoken in dialogue, speech patterns, vocabulary
+- Input: Scene content with character dialogue
+- Output: Voice consistency assessment and corrections
+- Key responsibilities:
+  - Character voice validation
+  - Dialogue authenticity checking
+  - Speech pattern consistency
+
+#### CharacterBodyLanguageAgent
+- Purpose: Physical actions and non-verbal communication validation
+- Domain: Body language, gestures, physical descriptions
+- Input: Scene content with character actions
+- Output: Body language consistency assessment
+- Key responsibilities:
+  - Physical action validation
+  - Gesture consistency checking
+  - Non-verbal communication analysis
+
+#### CharacterSubtextAgent
+- Purpose: Hidden meanings and relationship dynamics analysis
+- Domain: Subtext, power dynamics, emotional undertones
+- Input: Scene content with character interactions
+- Output: Subtext analysis and relationship validation
+- Key responsibilities:
+  - Subtext identification
+  - Relationship dynamic analysis
+  - Emotional undertone validation
+
+#### SensoryContinuityAgent
+- Purpose: Environmental consistency and sensory details validation
+- Domain: Setting descriptions, sensory elements, world consistency
+- Input: Scene content with environmental descriptions
+- Output: Sensory continuity assessment
+- Key responsibilities:
+  - Environmental consistency checking
+  - Sensory detail validation
+  - World-building continuity
+
+#### StyleAgent
+- Purpose: Writing style consistency across scenes
+- Domain: Prose style, tone, narrative voice
+- Input: Scene content for style analysis
+- Output: Style consistency assessment and recommendations
+- Key responsibilities:
+  - Style consistency validation
+  - Tone analysis
+  - Narrative voice checking
 
 ## Agent Lifecycle
 
@@ -119,17 +219,23 @@ sequenceDiagram
     participant Runner as AgentRunner
     participant Agent as BaseAgent
     participant Context as AgentContext
-    participant LLM as LLMClient
+    participant LLM as OpenRouterClient
+    participant PromptMgr as PromptManager
 
     Runner->>Agent: execute(context)
     Agent->>Agent: validate_input()
     Agent->>Context: get_data()
+    Agent->>PromptMgr: get_prompt_template()
+    PromptMgr-->>Agent: template
+    Agent->>Agent: _prepare_prompt()
     Agent->>LLM: generate_content()
     LLM-->>Agent: content
     Agent->>Agent: process()
     Agent->>Agent: validate_output()
     Agent->>Context: update_data()
     Agent-->>Runner: AgentResult
+    
+    Note over Runner,PromptMgr: Error handling and retry logic<br/>applied at each step
 ```
 
 ## Interaction Patterns
@@ -171,25 +277,48 @@ flowchart TD
 ## Development Guide
 
 ### Adding New Agent
-1. Create new class in appropriate directory
+1. Create new class in appropriate directory (`setting/`, `writing/`, `quality/`, `enhancement/`)
 2. Inherit from BaseAgent
 3. Implement required methods:
    ```python
    class NewAgent(BaseAgent):
+       def __init__(self, openrouter_client, prompt_manager):
+           super().__init__(openrouter_client, prompt_manager)
+           self.agent_name = "new_agent"
+
        def validate_input(self, context: AgentContext) -> bool:
            # Input validation logic
-           pass
+           required_keys = ["input_key1", "input_key2"]
+           for key in required_keys:
+               if not context.has_data(key):
+                   raise AgentValidationError(f"Missing required data: {key}")
+           return True
 
        def process(self, context: AgentContext) -> AgentResult:
            # Core processing logic
-           pass
+           input_data = context.get_data("input_key")
+           
+           # Get prompt template
+           template = self._get_prompt_template("new_agent_prompt")
+           
+           # Generate content using LLM
+           result = self._generate_content(template, input_data)
+           
+           # Update context
+           context.add_data("output_key", result)
+           
+           return AgentResult(content=result, success=True)
 
        def validate_output(self, result: AgentResult) -> bool:
            # Output validation logic
-           pass
+           if not result.content or len(result.content.strip()) == 0:
+               return False
+           return True
    ```
-4. Add corresponding tests
-5. Update agent runner if needed
+4. Add prompt template in `prompts/agents/`
+5. Add corresponding tests in `tests/agents/`
+6. Update agent runner configuration if needed
+7. Add to components.yaml specification
 
 ### Agent Best Practices
 - Keep agents focused and single-purpose
@@ -231,19 +360,41 @@ flowchart TD
    ```python
    def process(self, context: AgentContext) -> AgentResult:
        try:
-           result = self._core_processing()
+           # Validate input first
+           if not self.validate_input(context):
+               return AgentResult(
+                   success=False,
+                   errors=["Input validation failed"]
+               )
+           
+           # Core processing
+           result = self._core_processing(context)
+           
+           # Validate output
+           agent_result = AgentResult(content=result, success=True)
+           if not self.validate_output(agent_result):
+               return AgentResult(
+                   success=False,
+                   errors=["Output validation failed"]
+               )
+           
+           return agent_result
+           
+       except AgentValidationError as e:
+           return AgentResult(
+               success=False,
+               errors=[f"Validation error: {str(e)}"]
+           )
        except LLMError as e:
            return AgentResult(
                success=False,
-               errors=[str(e)]
+               errors=[f"LLM error: {str(e)}"]
            )
-       except ValidationError as e:
+       except Exception as e:
            return AgentResult(
                success=False,
-               errors=[f"Validation failed: {str(e)}"]
+               errors=[f"Unexpected error: {str(e)}"]
            )
-       
-       return AgentResult(content=result)
    ```
 
 ## Testing Strategy
